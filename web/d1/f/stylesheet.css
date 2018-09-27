@@ -17,7 +17,7 @@ header img {
 
 .hero {
     background-image: url('./assets/flowershop.jpg');
-    height: 80vh;
+    height: 70vh;
     position: relative;
     display: flex;
     justify-content: center;
