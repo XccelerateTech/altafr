@@ -43,13 +43,12 @@ header img {
 }
 
 .heading h1 {
-    color: white;
+    color: #ffffff;
     font-size: 40px;
 }
 
 .heading button {
-    background-color: #7ED321;
-    color: white;
+    color: #ffffff;
     font-size: 30px;
     height: 50px;
     width: 170px;
