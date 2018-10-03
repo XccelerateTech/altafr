@@ -20,13 +20,10 @@ h1::after, h2::after {
 }
 
 a {
-    color: #f05f40;
+    color: #000000;
 }
 
-.nav-link.active {
-    color: #f05f40 !important;
-    font-weight: bold;
-}
+
 
 .invert h1::after, .invert  h2::after {
     background-color: #fff;
@@ -50,8 +47,29 @@ a {
 .navbar {
     background: #fff;
     border-bottom: solid 1px #fff;
-    opacity: 0.6;
+    opacity: 0.3;
+    color: #000000 !important;
+    font-weight: bold;
 }
+
+.solid {
+    background: #fff;
+    border-bottom: solid 1px #fff;
+    opacity: 1;
+    transform: 0.5s;
+}
+
+.nav-link.active {
+    color: #f05f40 !important;
+    font-weight: bold;
+}
+
+.navbar-brandActive {
+    color: #f05f40 !important;
+    font-size: 1.3rem;
+
+}
+
 
 @media only screen and (max-width: 768px) {
     .navbar-brand {
@@ -186,7 +204,7 @@ a {
 
 .bullshit .hint {
     opacity: 0;
-    transition: opacity 0.5s;
+    transition: opacity 0.5s;   
     background: rgba(240,95,64,.9);
     position: absolute;
     top: 0;
