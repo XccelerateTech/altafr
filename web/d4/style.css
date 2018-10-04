@@ -182,27 +182,27 @@ a {
     color: rgba(0, 0, 0, 0.6);
 }
 
-/* bullshit */
+/* fourPic */
 
-.bullshit {
+.fourPic {
     background: #333;
     padding: 0 0 3%;
 }
 
-.bullshit p {
+.fourPic p {
     color: rgba(255, 255, 255, 0.6);
 }
 
-.bullshit .container-fluid, .bullshit .row > div {
+.fourPic .container-fluid, .fourPic .row > div {
     padding: 0;
     position: relative;
 }
 
-.bullshit .row {
+.fourPic .row {
     margin: 0;
 }
 
-.bullshit .hint {
+.fourPic .hint {
     opacity: 0;
     transition: opacity 0.5s;   
     background: rgba(240,95,64,.9);
@@ -219,22 +219,22 @@ a {
     color: rgba(255, 255, 255, 0.6);
 }
 
-.bullshit .hint:hover {
+.fourPic .hint:hover {
     opacity: 1;
 }
 
-.bullshit .hint span.word {
+.fourPic .hint span.word {
     display: block;
     font-size: 1.5rem;
     color: #fff;
     text-transform: capitalize;
 }
 
-.bullshit h2 {
+.fourPic h2 {
     margin: 1.5rem 0;
 }
 
-.bullshit h2::after {
+.fourPic h2::after {
     display: none;
 }
 
