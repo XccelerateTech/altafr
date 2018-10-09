@@ -28,6 +28,7 @@ class Player {
       this.name = options.name;
       this.health = options.health;
     }
+    
     attack(player){
       player.health = Math.max(0, player.health - 10);
       console.log(this.name+ ' (hp: '+this.health+') attacks '+player.name+ ' (hp: '+player.health+')');

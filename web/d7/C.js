@@ -89,7 +89,6 @@ class Gambler { //create a class called Gambler - use to initialize the gamblers
     play('Jim', gambler1); //call play() method with the parameters needed.
     play('Bill', gambler2)
   }
-  
   console.log('Casino bets are in!');
   while(gambler1.cash > 0 || gambler2.cash > 0){ //logic to keep the game going until they have lost all thier money
       round ++;
