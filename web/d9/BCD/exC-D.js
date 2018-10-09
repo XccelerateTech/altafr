@@ -1,5 +1,5 @@
 // validate name is less than 50 characters
-$('.name').on('keydown', function(e) { // keydown event in input - selecting class name 
+$('.name').on('keydown', function(e) { // keydown event in input - selecting class, name 
     var input = e.target.value; //the e.target.value are the characters that the user types into the input
     if(input.length > 50) { //check if length is over 50
         $(this).css('border','solid 2px red'); //change the css
@@ -20,17 +20,18 @@ $('.phone').on('blur', function(e) { // blur event - if the user clicks out of t
 
 // fill update section with specific row
 $('#contact-list').on('click','.row',function(e) { //target a specific row by clicking on the elements in that row
-    var rowElements = $(this).children(); //declare variables
-    var updateFormElements = $('#update-form input').slice(0,rowElements.length); // get all elements (values) from the array (update-form input) --> store values in new variable
+    var rowElements = $(this).children(); //declare variables, store the children of the clicked element in a variable 
+    var updateFormElements = $('#update-form input').slice(0,rowElements.length); // get all elements (values right now empty) from the array (update-form input) --> store values in new variable, updateFormElements
     for(var i =0; i < rowElements.length; i++) {
-        $(updateFormElements[i]).val($(rowElements[i]).html()); //use a for loop to iterate over each element in the new array - select the values and push them onto the rowElements
+        $(updateFormElements[i]).val($(rowElements[i]).html()); //use the for loop to iterate over each element in the new array, assign the values from the rowElements into updateFormElements using .val() 
+        //Set the value of each element in the set of matched elements from rowElements.
     }
-    $('#update-form').prop('row-id',$(this).attr('id')); //in update form, get the property row-id and the id associated with this attribute
+    $('#update-form').prop('row-id',$(this).attr('id')); //in update form, get this (row object) property row-id and the id associated with this attribute so that you update the correct form.
 });
 
 let rowIdCounter = $('#contact-list tbody').find('tr').length;  //see how many rows there are in our table
 
-// form submit
+// all form submit
 $('.contact-form').submit(function(e) { //when the contact-form is submitted do this.
     e.preventDefault(); //stops from reloading the page
     var formId = e.target.id;
