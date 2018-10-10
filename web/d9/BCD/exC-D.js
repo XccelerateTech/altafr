@@ -36,7 +36,7 @@ $('.contact-form').submit(function(e) { //when the contact-form is submitted do 
     e.preventDefault(); //stops from reloading the page
     var formId = e.target.id;
     var name = e.target.name.value;
-    var phone = e.target.phone.value; //get all information from form that the user filled out, store into newly defined varibles
+    var phone = e.target.phone.value; //get all information from form that the user filled out, store into newly defined variables
     var email = e.target.email.value;
     // the to be inserted contact information
     const row = $(`
@@ -57,7 +57,7 @@ $('.contact-form').submit(function(e) { //when the contact-form is submitted do 
         $(this).find('.clear').click(); //clear the information from the inputs (reset input fields)
     } else {
         $(row).attr("id",$(this).prop('row-id'));
-        // if you want to update a contact, find the relevant row and replace that row with updated information. Search goes by email as that will be unique.
+        // if you want to update a contact, find the relevant row and replace that row with updated information. 
         $('#'+$(this).prop('row-id')).replaceWith(row);
         // logic above pushes the information created in row over the attribute that was previously selected
     }
