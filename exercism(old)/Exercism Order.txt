@@ -16,3 +16,18 @@ Grade School
 Robot Name
 Wordy
 List Ops
+reverse string
+
+phonenumber
+run length encoding
+prime-factors
+rational numbers
+anagram	
+beer-song
+rotational cipher
+
+hamming
+isogram
+
+binary
+foodchain
