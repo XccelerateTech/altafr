@@ -30,16 +30,16 @@ $('#form').on('submit', function(e) {
 
                 var pastSunrises = sunrisesTime.filter(function(sunrise){
                     return (now - sunrise) > 0
-                }).sort().reverse();
+                }).sort();
 
                 var pastSunsets = sunsetsTime.filter(function(sunset){
                     return (now - sunset) > 0
-                }).sort().reverse();
+                }).sort();
 
                 var prevSunrise = pastSunrises[0]; //store both previousSunrise and Sunset in variables so that they can be called to check the time difference
                 var prevSunset = pastSunsets[0];
 
-                $('#times').append("The time difference between previous sunrise and now is "+toHHMMSS(now-prevSunrise- 86400*1000)+"<br/>"); //    E
+                $('#times').append("The time difference between previous sunrise and now is "+toHHMMSS(now-prevSunrise)+"<br/>"); //    E
                 $('#times').append("The time difference between next sunrise and now is "+toHHMMSS(nextSunrise - now)+"<br/>"); //E
                 $('#times').append("The time difference between previous sunset and now is "+toHHMMSS(now-prevSunset)+"<br/>"); // E
                 $('#times').append("The time difference between next sunset and now is "+toHHMMSS(nextSunset - now)+"<br/>"); // E
