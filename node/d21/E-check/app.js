@@ -14,8 +14,8 @@ timer.on('tick', function(remaining){
 })
 
 
-start(timer, 2);
+start(timer, 6);
 
-// setTimeout(()=> pause(timer), 2000);
-// setTimeout(()=> start(timer), 3000);
-// setTimeout(() => stop(timer), 5000);
+setTimeout(()=> pause(timer), 2000);
+setTimeout(()=> start(timer), 3000);
+setTimeout(() => stop(timer), 5000);

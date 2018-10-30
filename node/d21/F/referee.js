@@ -63,3 +63,5 @@ referee.on('resultReady', function(result){
 
 referee.start();
 
+referee.judge();
+

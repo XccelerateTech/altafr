@@ -10,4 +10,4 @@ timer.on('tick', function(remaining){
     console.log("Time remaining: "+remaining);
 })
 
-timer.countDown(30);
+timer.countDown(2);

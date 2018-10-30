@@ -8,11 +8,14 @@ class Timer extends EventEmitter {
         let interval;
 
         this.on('start', (seconds) => {
+            
             if (seconds != undefined) {
                 this.seconds = seconds
             }
+
             interval = setInterval(emitInterval, 1000);
             const that = this;
+
             function emitInterval() {
                 var remaining = that.seconds - that.counter;
                 if (remaining == 0) {
