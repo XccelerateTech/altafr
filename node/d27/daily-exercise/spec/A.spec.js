@@ -15,7 +15,7 @@ describe('starwars duel testing', () => {
         spyOn(fakeAnakin, 'attack');
         spyOn(fakeObiwan, 'attack');
         spyOn(fakeAnakin, 'injure');
-        spyOn(fakeAnakin, 'dead').and.returnValue(false);
+        spyOn(fakeAnakin, 'dead');
 
     });
 
@@ -43,6 +43,8 @@ describe('starwars duel testing', () => {
         duel(fakeAnakin, fakeObiwan);
         expect(fakeAnakin.attack).toHaveBeenCalledTimes(6);
         expect(fakeAnakin.attack).toHaveBeenCalledWith(fakeObiwan);
+
+        
         expect(fakeObiwan.attack).toHaveBeenCalledTimes(6);
         expect(fakeObiwan.attack).toHaveBeenCalledWith(fakeAnakin);
 
@@ -50,17 +52,19 @@ describe('starwars duel testing', () => {
 
    it('should always have the same outcome, Anakin becoming injured', ()=>{        
         duel(fakeAnakin, fakeObiwan)
-
+    //This is not the best method, try to use callThrough on your spyon method 
         fakeAnakin.injure(fakeAnakin.health -10 );
         fakeAnakin.dead()
       
-        expect(fakeAnakin.injure).toHaveBeenCalledWith(fakeAnakin.health-10);
+        expect(fakeAnakin.injure).toHaveBeenCalledWith(fakeAnakin.health -10);
         expect(fakeAnakin.dead).toHaveBeenCalledTimes(1);
+        expect(fakeAnakin.dead).toBeTruthy();
         });
+        
 
     it('Anakin should be rescued by Darth Sidious after 5000 milliseconds', () => {
         duel(fakeObiwan, fakeAnakin);
-        jasmine.clock().tick(5001);
+        jasmine.clock().tick(5000);
         expect(fakeAnakin.health).toEqual(800);
         expect(fakeAnakin.power).toEqual(90);
     });
