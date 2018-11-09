@@ -1,0 +1,46 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "first_name": "firstUser",
+      "last_name": "firstUserTEst",
+      "email": "testingUser@hotmail.com"
+    },
+    {
+      "last_name": "Clarkson",
+      "email": "topgear@hotmail.com",
+      "id": 3,
+      "first_name": "Jeremy"
+    },
+    {
+      "first_name": "Sam",
+      "last_name": "Cook",
+      "email": "sss@hotmail.com",
+      "id": 4
+    },
+    {
+      "first_name": "Tim",
+      "last_name": "The fifth",
+      "email": "ttttt@hotmail.com",
+      "id": 5
+    },
+    {
+      "first_name": "John",
+      "last_name": "tucker",
+      "email": "ergsfedgse@hotmail.com",
+      "id": 6
+    },
+    {
+      "first_name": "William",
+      "last_name": "Choi",
+      "email": "wc@hotmail.com",
+      "id": 7
+    },
+    {
+      "first_name": "Timothy",
+      "last_name": "RealLastName",
+      "email": "fakeEmail@hotmail.com",
+      "id": 8
+    }
+  ]
+}

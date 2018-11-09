@@ -1,0 +1,16 @@
+{
+    "groups":[
+        {
+            "id":0,
+            "name":"Group 1"
+        },
+        {
+            "id":1,
+            "name":"Group A"
+        },
+        {
+            "id":2,
+            "name":"Group C"
+        }
+    ]
+}
