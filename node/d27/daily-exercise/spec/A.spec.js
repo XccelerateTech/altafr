@@ -14,8 +14,10 @@ describe('starwars duel testing', () => {
 
         spyOn(fakeAnakin, 'attack');
         spyOn(fakeObiwan, 'attack');
-        spyOn(fakeAnakin, 'injure');
-        spyOn(fakeAnakin, 'dead');
+        spyOn(fakeAnakin, 'injure').and.callThrough();
+        spyOn(fakeAnakin, 'dead').and.callThrough();
+
+        //Now callthrough is not a method in jasmine. 
 
     });
 
@@ -53,10 +55,10 @@ describe('starwars duel testing', () => {
    it('should always have the same outcome, Anakin becoming injured', ()=>{        
         duel(fakeAnakin, fakeObiwan)
     //This is not the best method, try to use callThrough on your spyon method 
-        fakeAnakin.injure(fakeAnakin.health -10 );
+        fakeAnakin.injure(fakeAnakin.health-10);
         fakeAnakin.dead()
       
-        expect(fakeAnakin.injure).toHaveBeenCalledWith(fakeAnakin.health -10);
+        expect(fakeAnakin.injure).toHaveBeenCalled();
         expect(fakeAnakin.dead).toHaveBeenCalledTimes(1);
         expect(fakeAnakin.dead).toBeTruthy();
         });
