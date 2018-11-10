@@ -17,7 +17,16 @@ const JsonFile = require('./stores/JsonFile');
 let groupService = new GroupService(new JsonFile('groups.json'));
 let userService = new UserService(new JsonFile('users.json'));
 
+
+
+
 const {app} = require('./utils/init-app')();
+
+app.get('/', function(req,res, next){
+    console.log('Im going to get the index')
+    next()
+    
+})
 
 
 app.use('/',new ViewRouter().router());

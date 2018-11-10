@@ -30,14 +30,22 @@ describe('Route', () => {
 
 //fixing this properly
     it('GET /', function (done) {
+
+        let username = 'sam';
+        let password = '123456';
+        var auth = 'Basic ' + new Buffer(username + ':' + password).toString('base64');
+        var options = {
+            url: '/',
+            headers: {
+                'Authorization': auth
+            }
+        }
+
         request(app)
-            .get('/')
-            .set('Username', 'sam')
-            .set('Password', '123456')
-            .set('Authorization', 'Basic c2FtOjEyMzQ1MTIzNDU=')
-
-
-
+            .get(options)
+            // .set('Username', 'sam')
+            // .set('Password', '123456')
+            // .set('Authorization', 'Basic c2FtOjEyMzQ1MTIzNDU=')
             .expect(200)
             .end((err) => {
                 if (err) throw err;

@@ -1,5 +1,4 @@
 function uncaught(){
-    console.log('huh?')
     // not handling?
 
 }
@@ -100,7 +99,8 @@ describe("NoteRouter", () => {
         beforeAll(function() {
             // [TODO] Think of a better way to handle this
             // To avoid printing UnhandledPromiseRejectionWarning
-            process.on('unhandledRejection', uncaught);
+            //process.on('unhandledRejection', uncaught);
+            process.removeListener('unhandledRejection', uncaught);
         });
 
         afterAll(function() {

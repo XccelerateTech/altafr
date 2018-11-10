@@ -37,15 +37,21 @@ app.use(basicAuth({
 let noteService = new NoteService(path.join(__dirname, config.notes));
 
 //handle initial get request
-app.get('/', function (req, res){
-    noteService.list(req.auth.user).then(function(notes){
-        res.render('index', {
-            user: req.auth.user,
-            notes: notes
+app.get('/', function (req, res, next){
+    console.log('getting')
+    next()
+});
 
-        });
+app.get('/', (req,res)=>{
+    noteService.list(req.auth.user).then(function(notes){
+    res.render('index', {
+        user: req.auth.user,
+        notes: notes
+
     });
 });
+})
+
 
 //Set up the NoteRouter (the ability to get your notes to the right location)
 app.use('/api/notes', (new NoteRouter(noteService)).router());
