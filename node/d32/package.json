@@ -1,0 +1,15 @@
+{
+  "name": "d32",
+  "version": "1.0.0",
+  "description": "",
+  "main": "d.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "csv-reader": "^1.0.3",
+    "pg": "^7.6.1"
+  }
+}
