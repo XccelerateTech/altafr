@@ -43,7 +43,7 @@ class NoteRouter {
         //         .catch((err) => res.status(500).json(err));
         // })
 
-        return router;
+        return router; //allow the methods (get, put, post and delete) to be used. 
     }
 
     get(req, res){

@@ -1,5 +1,5 @@
 $(()=>{
-    $.get('/api/users').then((data)=>{
+    $.get('/api/prisoners').then((data)=>{
         data.forEach(e=>{
             $('#user-list').append(User(escapeHtml(e.first_name),escapeHtml(e.last_name),escapeHtml(e.email)));
         });
