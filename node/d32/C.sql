@@ -49,7 +49,7 @@ SET TRANSACTION ISOLATION LEVEL Serializable;
 SELECT quantity 
     FROM stock INNER JOIN citrus
         on stock.citrus_id = citrus.id
-        WHERE name = 'lemon'
+        WHERE name = 'lemon';
 UPDATE stock
 SET quantity = quantity - 30
 FROM citrus
@@ -62,7 +62,7 @@ SET TRANSACTION ISOLATION LEVEL Serializable;
 SELECT quantity 
     FROM stock INNER JOIN citrus
         on stock.citrus_id = citrus.id
-        WHERE name = 'orange'
+        WHERE name = 'orange';
 UPDATE stock
 SET quantity = quantity -20
 FROM citrus
@@ -75,7 +75,7 @@ SET TRANSACTION ISOLATION LEVEL Serializable;
 SELECT quantity 
     FROM stock INNER JOIN citrus
         on stock.citrus_id = citrus.id
-        WHERE name = 'lime'
+        WHERE name = 'lime';
 UPDATE stock
 SET quantity = quantity - 20
 FROM citrus
@@ -88,11 +88,11 @@ SET TRANSACTION ISOLATION LEVEL Serializable;
 SELECT quantity 
     FROM stock INNER JOIN citrus
         on stock.citrus_id = citrus.id
-        WHERE name = 'grapefruit'
+        WHERE name = 'grapefruit';
 UPDATE stock
 SET quantity = quantity - 10
 FROM citrus
-WHERE stock.citrus_id = citrus.id AND name ='grapefruit ';
+WHERE stock.citrus_id = citrus.id AND name ='grapefruit';
 COMMIT;
 
  
