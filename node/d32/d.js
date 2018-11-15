@@ -21,7 +21,7 @@ async function commands() {
 
     let rows = [];
 
-    inputStream.pipe(CSVReadableStream({ parsedNumbers: true, parseBooleans: true, trim: true }))
+    inputStream.pipe(CSVReadableStream({ parseNumbers: true, parseBooleans: true, trim: true }))
         .on('data', async (row) => {
             rows.push(row);
         })

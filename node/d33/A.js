@@ -20,6 +20,7 @@ async function command() {
             rows.push(row);
         })
         .on('end', async (data) => {
+            
             knex.transaction(async (trx) => {
                 for (let row of rows) {
                     let [action, name, quantity] = row;
@@ -58,7 +59,6 @@ async function command() {
                 console.log(trxResult)
 
             })
-
 
         })
 }
