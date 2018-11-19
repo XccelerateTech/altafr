@@ -6,11 +6,11 @@
 //   The client side handlebar code is a bit different from
 //   what you have learnt in our CMS. We taught server-side
 //   handlebars which you render the template in node.js
-//
-//   This handlbar is loaded via CDN. We compile it into
+
+//   This handlebar is loaded via CDN. We compile it into
 //   `notesTemplate` and we can use this as a function to
 //   render HTML. See function `reloadNotes()`.
-//
+
 //   For more information, please look at
 //   http://handlebarsjs.com/
 // 
