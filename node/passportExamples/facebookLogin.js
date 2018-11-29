@@ -66,13 +66,13 @@ passport.use('facebook', new FacebookStrategy({
     clientID: process.env.FACEBOOK_ID,
     clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
     callbackURL: `/auth/facebook/callback`
-},(accessToken, refreshToken, profile, done)=>{
+},async (accessToken, refreshToken, profile, done)=>{
     console.log(profile)
 
     let userResult = await knex('users').where({facebookID : profile.id});
     if(userResult ==0){
         let user = {
-            facebookId: profile.id,
+            facebookID: profile.id,
             email: profile.displayName,
             accessToken: accessToken
         }
