@@ -1,0 +1,26 @@
+.canvas{
+    border:4px black solid;
+    background-color: white;
+    position:absolute;
+    top:50px;
+    bottom:0px;
+    left:300px;
+    right:0px
+}
+
+.btn:hover{
+    color: black;
+    border: 1px solid #888;
+    background-color: #ddd;
+  }
+  
+  #canvas-draft{
+      background-color: transparent;
+  }
+  
+  body{
+      overflow:hidden;
+  }
+  .canvas-container{
+      height:720px;
+  }  
