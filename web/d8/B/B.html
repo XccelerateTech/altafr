@@ -26,6 +26,10 @@
             }
             http.send();
         }
+
+        informMe('name', 'France', function(data){
+            console.log(JSON.parse(data))
+        })  
         
         //get information on Berlin - search by capital city
         informMe('capital', 'berlin', function (data) {
