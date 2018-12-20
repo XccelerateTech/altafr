@@ -27,13 +27,13 @@ export default class Form extends React.Component <IFormProps, IFormStates>{
         return(
             <div className="formContainer">
             <label>First Name:</label>
-            <input type="text" name="firstName" value={this.state.firstName} onChange={this.onFirstNameChange}/>
+            <input type="text" name="firstName" value={this.state.firstName} onChange={this.onFirstNameChange} onBlur={this.validateInput}/>
             <br />
             <label>Last Name:</label>
-            <input type="text" name="lastName" value={this.state.lastName} onChange={this.onLastNameChange}/>
+            <input type="text" name="lastName" value={this.state.lastName} onChange={this.onLastNameChange} onBlur={this.validateInput}/>
             <br />
             <label>Occupation:</label>
-            <input type="text" name="occupation" value={this.state.occupation} onChange={this.onOccupationChange}/>
+            <input type="text" name="occupation" value={this.state.occupation} onChange={this.onOccupationChange} onBlur={this.validateInput}/>
             <br />
             <button onClick={this.addUser}>Submit</button>      
             </div>
@@ -64,5 +64,17 @@ export default class Form extends React.Component <IFormProps, IFormStates>{
         })
     }
 
+    private validateInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.currentTarget.value === ''){
+            alert('Please Input the details!')
+            
+        }
+    }
 
+
+}
+
+const badValidation = {
+    border: 4,
+    borderColor: 'red'
 }
