@@ -35,6 +35,7 @@ export default class UserCard extends React.Component<IUserCardProps> {
                             <p>Occupation:
                         {user.occupation}
                             </p>
+                            <br />
                         </div>
                     </div>
                 </div>
@@ -60,7 +61,7 @@ const cardStyle = {
     borderWidth: 2,
     color: '#ba1057',
     display: 'flex',
-    height: 150,
+    height: 175,
     justifyContent: 'center',
     width: 150,
 }

@@ -74,7 +74,7 @@ export default class Form extends React.Component <IFormProps, IFormStates>{
 
 }
 
-const badValidation = {
-    border: 4,
-    borderColor: 'red'
-}
+// const badValidation = {
+//     border: 4,
+//     borderColor: 'red'
+// }
