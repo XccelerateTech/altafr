@@ -37,7 +37,7 @@ class Referee extends EventEmitter {
         }
 
         if (computer == 'rock') {
-            if (person == 'paper') return 'player wins';
+            if (player == 'paper') return 'player wins';
             return 'computer wins'
         }
 
@@ -50,14 +50,14 @@ const player = new Player(referee);
 const computer = new Computer(referee);
 
 referee.on('firstPlayerTurn', function (){
-    player.play('rock');
+    player.play('scissors');
 });
 
 referee.on('otherPlayerTurn', function (){
     computer.emit('computerTurn');
 });
 
-referee.on('resultReady', function(result){
+referee.on('resultReady', function(results){
     console.log(results)
 });
 

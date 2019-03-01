@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Make me a number</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+<body>
+
+
+    <h1>Look at me I will generate a random number</h1>
+    <p>Just put in the highest and lowest numbers on the scale you wish.</p>
+
+    <form id='limits'>
+        <input type='text' name='upperLimit' placeholder='Upper Limit' required>
+        <input type='text' name='lowerLimit' placeholder='Lower limit' required>
+        <input type='submit' name='submit' value='submit'>
+    </form>
+
+    <div id='randomNumber'>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script type='text/javascript'>
+        $('#limits').submit(event => {
+            event.preventDefault();
+
+            let upperLimit =  $('[name=upperLimit]').val();
+            let lowerLimit = $('[name=lowerLimit]').val();
+
+            function generateRandomNumber (min, max){
+                let number =  (Number(Math.random() * (max - min) + min)).toFixed(0);
+                
+                $('#randomNumber').text(`Random Number is: ${number}`)
+            }
+
+            generateRandomNumber(lowerLimit, upperLimit)
+
+        })
+
+        //FIX THE MATH FLOOR DONT USE TO FIXED.
+    </script>
+</body>
+</html>

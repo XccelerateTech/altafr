@@ -1,0 +1,47 @@
+{{!-- ServerSide rendering --}}
+{{!-- {{#each people}}
+<span class="people">
+    <h1>Person</h1>
+    <h3>First name:</h3>
+    {{first}}
+    <h3>Last name:</h3>
+    {{name}}
+    <h3>Profession:</h3>
+    {{profession}}
+    <h3>Country of Origin</h3>
+    {{born}}
+    <br />
+</span>
+{{/each}} --}}
+
+{{!--
+<script type='text/javascript' src="/californiapeople.js"></script> --}}
+
+{{!-- {{>people}} --}}
+<h1>Look at all the beautiful people from Hong Kong</h1>
+<br />
+
+<div class='row'>
+    {{#each people}}
+    <div class='col-sm-3'>
+        <h1>Person</h1>
+        <h3>First name:</h3>
+        {{first}}
+        <h3>Last name:</h3>
+        {{last}}
+        <h3>Profession:</h3>
+        {{profession}}
+        <h3>Country of Origin</h3>
+        {{born}}
+        <br />
+
+    </div>
+    {{/each}}
+</div>
+
+
+{{!--
+
+
+<div id='people-list'>
+</div> --}}

@@ -1,0 +1,35 @@
+Now we are going to implement React with Redux, so lets create another project. 
+
+This weeks weekly assignment is alot easier as it is a continuation of the previous weekly assignment, we just need to add two more things, we add the backend, you can try to do it with typescript if you like. We would also like you to store the informtion using Redux, not just local storage. 
+
+react-redux is written in javascript and therefore does not have the type definitions. 
+
+@types helps us to install these type definitions, but what you should know is some modules like redux, already have these types installed so we dont need to also add @type/redux to our project. 
+But say you didnt know this and you added it yourself,
+
+yarn add @types/redux, you would get a warning which reads, this is a stub types definition for Redux...... Redux provides its own type definitions so you dont have to. So there is no harm!
+
+create-react-app redux-08 --scripts-version=react-scripts-ts
+cd into redux-08
+
+yarn add redux react-redux @types/react-redux
+
+yarn start
+
+ Say we want to create a team management application. We want to leverage redux, so to do redux. Create the redux store, a directory inside src named redux. Inside this directory make a file called store.ts
+
+We have now made the store, but not touched any tsx files. 
+
+But we can run test cases on this redux store:
+
+yarn add jest-enzyme enzyme @types/enzyme enzyme-adapter-react-16 @types/enzyme-adapter-react-16
+ 
+ We will add test cases for the front end. Previously we only really wrote test cases for our backend, but redux gives us the oppertunity to test on the frontend. So lets do some practice.
+
+ make a new file named: setupTest.ts in src. - then we define the store.test.ts where we write our test cases. 
+
+When your project gets bigger and bigger, the redux in your frontend will get larger and larger and so the writing test cases for your front end is a good practice to get into. 
+
+But let me repeat something, we have not touched React, we have only developed the Redux store, and the test cases in this case are just for the Redux store. Indicating that Redux is an independent unit isolated from React. Its sole purpose, is the manage the redux store so that it is not modified directly. We have a strict rule set of what is allowed to pass into the redux store, moreover it protects the state, we relie on the reducer to create a new state -> show them the diagram again. 
+
+If any of you have heard of angular which is similar to React, you can actually attach redux to angular for the same purpose. 

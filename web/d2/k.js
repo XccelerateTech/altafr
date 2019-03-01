@@ -17,3 +17,4 @@ function maya(number){
     }
     return result;
 }
+

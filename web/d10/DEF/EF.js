@@ -36,8 +36,12 @@ $('#form').on('submit', function(e) {
                     return (now - sunset) > 0
                 }).sort();
 
-                var prevSunrise = pastSunrises[0]; //store both previousSunrise and Sunset in variables so that they can be called to check the time difference
+                var prevSunrise = pastSunrises[1]; //store both previousSunrise and Sunset in variables so that they can be called to check the time difference
                 var prevSunset = pastSunsets[0];
+
+                console.log(now)
+                console.log(pastSunrises)
+                console.log(prevSunrise)
 
                 $('#times').append("The time difference between previous sunrise and now is "+toHHMMSS(now-prevSunrise)+"<br/>"); //    E
                 $('#times').append("The time difference between next sunrise and now is "+toHHMMSS(nextSunrise - now)+"<br/>"); //E
@@ -75,11 +79,12 @@ $('#btn').on('click', function(e) { //compare the location against Hong Kong's s
            
             if(inputDiff > hongKongDiff){
 
-                alert('Your input has a longer day time');
+                $('#results').append('Your input has a longer day time than Hong Kong')
+
 
             }else{
 
-                alert('HK has longer day time')
+                $('#results').append('Your input has a shorter day time than Hong Kong')
             }
         });
     });

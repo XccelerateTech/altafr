@@ -18,4 +18,4 @@ start(timer, 6);
 
 setTimeout(()=> pause(timer), 2000);
 setTimeout(()=> start(timer), 3000);
-setTimeout(() => stop(timer), 5000);
+setTimeout(() => stop(timer), 9000);

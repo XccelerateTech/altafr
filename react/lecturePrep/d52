@@ -1,0 +1,546 @@
+You should follow the cms to understand what a component is as well as the importance of immutability and the concept of timetravel in our applications. Goto the time travel sections and show them the codepen code, which works, it will allow people to travel back through time to specific moves, moreover it will tell the users when a person has won.
+
+You use typescript and react to do this game, it is around 200 lines of code.
+
+Exercise from typescript yesterday. 
+These concepts are vital to our understanding of typescript and how we can use it. 
+One of the most common language features in strong typed languages, is type generic, what is this?
+
+Open a new react-application that has typescript installed. 
+You will have encountered type generic when working with react. 
+In App.tsx you define the app component as well as the html that it will generate from the JSX
+in the index.tsx you can see 'App' this is referencing the App that we make in app.tsx
+In the index.tsx we are telling ReactDOM to render the App to the 'root'
+
+When you look at the html elements in the App.tsx they are technically components themselves, the only real difference is that they look like HTML and they have lowercase letters to start. 
+
+Can this App components accept attributes? In react we call these attributes, properties?
+
+In index.tsx inside the App tag
+
+<App name='test' />
+When doing this it will cause typescript to throw and error. This is because when we are defining out component, we have set it to accept no attributes at all. So how can we allow our component to accept properties?
+
+in App.tsx, 
+
+class App extends React.Component add:
+
+we add what looks like a html tag, but it is not a html tag. Here I am able to define what my component can accept as a property.
+class App extends React.Component <{name: string}> {
+
+}
+
+This should remove the error from the index.tsx.
+So if we do not declare the property in the App.tsx, our code in the index.tsx will have an error due to typescript, essentially it knows that we are not meant to accept any properties.. Once we add the code back we can see typescript is happy, as we declare it the property name in our component, we are therefore able to pass this property into the app in index.tsx.
+
+This is type Generic, this example might be confusing. 
+
+Lets make a better example.
+Exercism typescript example 
+look at sublist, and select shybytes answer.
+Goto the instructions, given two lists we are going to see if the first list in contained in the second or if the second list is contained in the first. EG
+A = [1,2,3] B = [1,2,3,4,5] A is a subset of B.
+This is quite simple
+
+logically its quite simple to work out, but how do we implement this using type script?
+
+look into lectureExamples, d52-sublist.
+
+Back to my-first-app
+<{name:string}> is type generic, which means that React.Component is a very generic class. The React Component will accept some of the properties that we define in index.tsx. But the react.Component, but the writers of this codebase, would not be able to predict all the different types of inputs that could be passed through their React.Component so they give users the oppertunity to define specific properties here. Alturnativly you can use interface, to define how an object should look or what key / values this object should contain. 
+
+in App.tsx above class App extends....
+
+Add in the interface so that we can define the properties of this component.
+
+interface IAppProps{
+name:string
+}
+
+in App.tsx now replace the original declaration of the type generic, 
+
+class App extends React.Component<IAppProps> {....}
+
+These two different methods ultimately do the same thing, but when defining multiple properties and their type declarations it is better practice/ convention to write the interface.
+
+This is type generic, which is very important to typescript and react-typescript. 
+
+Enums, this is used to declare enumeration, a distinct type that consists of a set of named constants called the enumerator list. 
+Enums allow us to define a set of named constants. Using enums can make it easier to document intent, or create a set of distinct cases. TypeScript provides both numeric and string-based enums.
+
+Goto typescriptlang.org/docs/handbooks/enums.html
+
+Say we have some constants: up, down, left and right.
+you might not want to use a string to define these constants. So we can define constants without needing to use a string.
+
+another example would be Hong kong, new territories and kowloon, if we dont want to use strings to define these variables we can assign numbers to represent them
+
+we use enums to define constants. 
+
+Show them the examples in the documentation:
+
+enum Response {
+    No = 0,
+    Yes = 1,
+}
+
+function respond(recipient: string, message: Response): void {
+    //.....
+}
+
+respond("Princess Caroline", Response.Yes)
+
+Look at this example, there is a function called respond, recipient is defined here as a string, the message might be Yes or No, really 0 or 1 as we defined these messages above in enum Response. We dont want to define message: as a number though as that means users would be able to pass any number through the function without throwing any errors. 
+
+Moreover we do not want to be hard coding answers etc. 
+
+Without enum:
+
+function respond(recipient: string, message: 0| 1): void {
+
+}
+
+respond("Princess Caroline", Response.Yes)
+
+this is legal type script. you need tslint to throw some errors. 
+
+This is quite unclear.. for other people reading your code, so if you define the enum Response, other coders will be able to see your intent as well as what your code should be doing.
+
+Another example.
+
+enum HttpStatus {
+OK = 200,
+NoConent = 201,
+NotFound = 404
+}
+
+common in other languages not just javascript.
+
+Symbols, this is a javascript concept but you can look it up easily. 
+
+Iterators and Generators
+Look at documentation yourselves.
+
+Namespaces and modules, this is very important.
+The reason we want to use type script is to scale the javascript. 
+
+a module is defined by anything that you export (also import) ==> realistically we have used this module systme in nodejs, anything you required in your project can be seen as a module. 
+
+Within a module you are able to define a component, if we always refer to component, it could be react.component, html.component.
+This is what we call modules, this is to avoid naming conflicts. We dont want to components at are called the same thing in our project.
+
+But there is something called the namespaces, which are globally available, therefore you could add, JSX.Element[] as the definition for the key name in interface, yet we have not defined this in this our app.tsx, or import this JSX.
+The reason we can use JSX is due to the name space, hover over the JSX.Element[].
+
+You might be able to see images.d.ts, actually for typescript, you are allowed to create a file called index.d.ts (in our src directory) which is actually a a definition file which, this file will allow us to apply type definitions to the global state, a global type definition. You will need to use the namespace, its JSX. something, to avoid name conflict.
+
+Decorators
+This is not officially supported in typescript, its a common language feature in other languages. 
+
+Decorators are on top of any property or method we can declare some additional information so that another library (or entity framework) can preprocess these methods or properties so that additional actions may be preformed on them. Say for example to help you create a migration file.
+
+The concept of a decorator is important and used in both C sharp and Java
+
+We probably wont be using decorators in our typescript experience 
+
+Of these six features:
+
+Generics
+Enums
+Namespaces
+
+decorator maybe
+symbols probably not
+
+iterators and generators, we have already used this one. 
+
+Revision of typescript. A brief intro to the relationship between React and Typescript.
+
+Introduction to React.
+
+React caters only to html components, it doesnt change the way we are calling information from the backend, it will not change how you layout your front end, it just helps you to define the view.
+
+We have already had a brief comparison between an app with react and without react. 
+One method without Mvvm, when you receive data from the server or backend or database, you will find the exact comment box, generate a template, then replace the comment box with the 
+html that you want. 
+With React, there is databinding, when you update the data in the frontend, then the component will update automatically, how does react do this?
+
+Powerpoint to show visualisation of how React rerenders the virtual DOM and then compares it to the real dom, any updated information on the virtual will be updated on the real DOM.
+
+following this example we have a codealong to develop this counter and implement all of the components from scratch. 
+
+Start the application from scratch, start in an empty directory,
+
+If you had errors yesterday, when trying to develop your react app, try to install yarn first, as if you do not have this, create-react-app will try to use npm which will be alot slower. So install yarn so that create-react-app can use yarn to install the require dependencies.   
+
+create-react-app counter-08 --scripts-version=react-scripts-ts
+
+cd counter-08
+yarn start
+
+code .
+
+The first thing that we want to do is remove some code in App.tsx, then we want to add the button that is required to initalise our counters.
+
+the code should look like this in the end:
+
+class App extends React.Component {
+    public render() {
+        return (
+            <div className="App">
+                <button>Add Counter</button>
+            </div>
+        );
+    }
+}
+
+also remove any unused code from above: import logo....
+If we leave this in there will be a compilation error. You can show them this if you want to. This is due to TS-lint enforcing coding convention onto your code. So you are not wasting any lines of code. 
+
+You should be able to see the button when you open the browser that yarn start opened with the live server it created.
+
+This button is just like html. 
+
+The next step is to create another component, our counter, so we make a new file called Counter.tsx in our directory
+
+As it is a new component, we will need to import a couple of things:
+
+
+import * as React from 'react';
+
+class Counter extends React.Component {
+    public render(){
+        return (
+        
+        );
+    }
+}
+
+when defining our new classes we must always start with a capital letter.
+What is public? Public is a class modifier, which means that other classes or instances outside of this call can call this function, if we wanted to limit it to only be called inside this function we can use the private modifier. We also have protected meaning only the subclasses can call the method.
+
+If you want to explore this concept more, in Post Graduation you can read more in OO Design principles and clean code.
+
+The render method expects us to return some react elements. which is the html. 
+
+
+class Counter extends React.Component {
+    public render(){
+        return (
+            <div>
+            Counter : 0 <button>+</button> <button>-</button>
+            </div>
+        );
+    }
+}
+
+export default Counter;
+
+Now we have defined the counter here and used export default, we are able to import the counter component into our App.tsx
+
+import Counter from './Counter';
+
+at the top of the file.
+ under the add counter button add this
+
+ <Counter />
+
+ Ts lint might throw an error if the import groups are not in alphabetical order. Show them this error and fix it as well. You can do this manually, put this import statement seperatly by leaving an empty line, or vscode can help you if you hover over the lightbulb.
+
+Now when we goto the application in our browser we should be able to see the counter component rendered with its buttons underneath the add counter button.
+
+We want to be able to render these counters dynamically, without hard coding them to the app.tsx, so we need to use props and states.
+
+To define props, this is given to the counter by its parent the App, not given inside counter.tsx so App will define the props in app.tsx.
+
+In counter.tsx:
+
+interface ICounterProps {
+    number: string;
+}
+
+semicolon for each property defined, once we have defined what we need, we add ICounterProps to our class counter.
+
+class Counter extends React.Component<ICounterProps> {
+    .....
+}
+
+In our app.tsx we can add
+<Counter number='1' />
+<Counter number='2' />
+<Counter number='3' />
+<Counter number='4' />
+
+In Counter.tsx, we want to add a javascript object, we want to add an expression to our counter, so that we can use the properties passed by the App.tsx
+
+When we are using JSX, to write out our HTML elements, we can add {} curly braces to create and initalise a javascript enviroment. 
+
+<div>
+    Counter { this.props.number }: 0 <button>+</button> <button>-</button>
+</div>
+
+We use this.props.number as in the interface we defined our property our prop number.
+Show them the output in the browser.
+
+But this is still quite static, due to the nature of props only being able to be given by the parent and the fact that we cannot manipulate the prop inside the Counter component. 
+
+Moreover the 0 current will need to be updated through states inside the component Counter.tsx
+to define the states: we define a constructor. This is the usual way that we define constructors.
+
+beneath class Counter.... { 
+    public constructor(props: ICounterProps){
+        super(props);
+
+        this.state= {
+            count: 0
+        };
+    }
+}
+
+The state controls what type of information we want to change inside our Counter component. 
+So now we should be able to add the state 'count' into our Counter.
+
+<div>
+    Counter { this.props.number }: { this.state.count } <button>+</button> <button>-</button>
+</div>
+
+but there is an error? this is because we havent defined the type generic for our state count.
+
+beneath ICounterProps:
+
+interface ICounterStates {
+    count: number;
+}
+
+now add this into the class.
+
+class Counter extends React.Component<ICounterProps, ICounterStates> {
+
+now the error should be gone. But we still need to make the buttons work.
+So we will edit the buttons in our counter now.
+
+<button onClick={ this.someFunction }
+
+React knows that onClick should be given a function (when you hover over it, it should prompt you.)
+
+define this function, before public render () and after the state and constructor declaration.
+
+private someFunction(){
+    return;
+}
+
+It will cause an error, move the private after the public
+
+private someFunction (){
+
+    console.log('test')
+}
+
+This is causing errors due to console.log = ts-lint doesnt want this.
+you can temporarily disable this:
+
+private someFunction (){
+// tslint:disable-next-line:no-console
+    console.log('test')
+}
+
+Show them the console.log
+
+now rename someFunction to increaseCount
+
+Now we need to change the logic inside our function, 
+
+We would logically try this first, 
+
+private increaseCount(){
+    this.state.count += 1;
+
+}
+
+But React does not want you to touch any variable directly, as react wont be notified and wont be able to rerender on change. 
+So we are able to do it using Reacts function,
+setState
+
+private increaseCount(){
+    this.setState({
+        count: this.state.count + 1
+    });
+}
+
+This is the correct way to update the count, using a react function to change the state, instead of altering it directly with our own code. 
+
+But this will throw an error! Cannot setState of undefined....
+
+This is because of the scope changing for the word this.
+remember the scope, we passed the function to the button onClick, so this has chnaged, so we should use an arrow function or bind.
+
+
+private increaseCount =() =>{
+    this.setState({
+        count: this.state.count + 1
+    });
+}
+
+private (or public) methodname = to arrow function, this is the arrow function in typescript
+this should allow the buttons to work.
+
+ask them to do the decrement themselves.
+
+
+Now for the dynamic creation of the counter.
+
+In the app.tsx we need to do something similar to what we did previously. we need to manipulate the App, manipulate some data.
+
+We are manipulating the state.
+underneath the imports, above the class.
+we need to define the App states:
+
+interface IAppStates {
+    numberOfCounter: number;
+}
+
+we just need to define the state, so we pass empty curly braces in place of IAppProps. Then we pass IAppStates as we need to define it if we want to control the number of counters dynamically.
+
+We also need to update the state in a constructor
+
+class App extends React.Component <{}, IAppStates> {
+    public constructor(props: {}){
+        super(props);
+
+        this.state = {
+            numberOfCounter: 0
+        };
+    }
+
+    public render(){
+        return(
+            <div className="App">
+            <button>Add Counter</button>
+
+============================================================================
+we cannot use this here, this is incorrect syntax. because an expression is expected?
+let x =0; this is a statement.
+the 0 is the expression. 
+
+Remember this whole div will convert to react.createElement, everything I define here is inside an array, we a forloop be put in an array? of course not. So how do we do them!?
+
+{
+    for (let i = 0; i < this.state.numberOfCounter; i++ ){
+
+    }
+}
+           <Counter number="1" />        
+        )
+    }
+}
+
+
+===========================================================================
+
+If you really want to do a for loop create it before the return(
+
+)
+
+public render () {
+    const counters = [];
+    for (let i = 0; i < this.state.numberOfCounter; i++ ){
+    counters.push(<Counter number={i.toString()} />);
+    }
+    
+    return (
+        <div className="App">
+        <button>Add Counter</button>
+           <Counter number="1" />        
+           <Counter number="2" />        
+           </div>
+    );
+}
+}
+
+export default App;
+
+we make an array called counters, so this counters, will push a counter component where the number is i. 
+We push an element into the array so we can edit the bottom. we just need to render counters. 
+
+============================================================================
+
+interface IAppStates {
+    numberOfCounter: number;
+}
+
+class App extends React.Component <{}, IAppStates> {
+    public constructor(props: {}){
+        super(props);
+
+        this.state = {
+            numberOfCounter: 0
+        };
+    }
+
+public render () {
+    const counters = [];
+    for (let i = 0; i < this.state.numberOfCounter; i++ ){
+    counters.push(<Counter number={i.toString()} />);
+    }
+    
+    return (
+        <div className="App">
+        <button>Add Counter</button>
+          { counters }      
+           </div>
+    );
+}
+}
+
+export default App;
+
+Now we need to make the Add Counter button work so that we can dynamically add counters:
+
+<button onClick={ this.addCoutner }>Add Counter</button>
+
+below the render method
+
+private addCounter = () => {
+    this.setState({
+        numberOfCounter: this.state.numberOfCounter + 1
+    })
+}
+
+now we should be able to add unlimited counters that work. 
+There will be an error in the console.log.
+
+When ever we define an array, we make it slightly difficult for react to update the virtual dom,  remember the virtual dom is trying to reference the heirarchy between the real dom and virtaul dom
+so if I define it like a counter, from reacts point of view it can be certain that we always have a good heirarchy to track individual components, 
+
+but for arrays it is more difficult, react only can ascertain the position in the array, not a specific counter.
+
+EG: I have five counters, then I remove the third one, then react, cant trace the individual counter as it only has the position in the array. 
+So React wants you to define a key so that it can track the individual counters. we need to pass a key to the array react will rerender everything which wastes preformance, so it needs a key to be fast. 
+
+The key is usually an id in the database or something like that, for this app, we can just make it i as we use the forloop to generate the counters.
+now react can identify the individual counters. 
+
+public render () {
+    const counters = [];
+    for (let i = 0; i < this.state.numberOfCounter; i++ ){
+    counters.push(<Counter key = {i} number={i.toString()} />);
+    }
+    .....
+
+
+    Whenever you define an array in React always define a key with it. 
+
+    make a minus button work and make a button to get rid of the counters.
+
+    One last thing, right now when we hover over the counters array, it has type any, which is not great for our App.
+
+    So we need to specify and define what can be pushed into the array. As of right now we could have 
+    counters.push(1), and it would work, which might impede the outlook of our app.
+
+    so in: render()
+
+    const counters: JSX.Element[] = []; //as it is an array of elements
+
+    react might look difficult, but imagine trying to increment and decrement separate counters using jquery. React, makes it easier in someways. 
+
+    you define a component, then it will handle itself in the app. 

@@ -1,0 +1,49 @@
+Asynchronous code and call backs
+
+callbacks
+
+writing a callback function
+
+fs stream and buffers
+
+readfiles
+write files
+using fs
+ 
+examples
+
+server using http  - listen etc.
+
+serving files
+routes
+
+Node continued 
+
+How NodeJs actually works and runs.
+Using the mcdonalds example, each person will be placed in event queue, each order will be taken by the event loop, if it is a blocking operation (it will take a long time) the event loop pass the function to a worker thread and move to the next function in the event queue, until the blocking operation is completed and fires its call back, at which point the functions result is passed to the event loop and back to the event queue.
+
+Reading from memory should not slow down or block your events, however when reading from a file, Network or database (or even real world media) computers may take time, causing a blocking action, any functions that contain logic which links to no.2 will block the event loop as it takes a long time.
+
+IO - input output
+Blocking is when the execution of additional JavaScript in the Node.js process must wait until a non-JavaScript operation completes. This happens because the event loop is unable to continue running JavaScript while a blocking operation is occurring.
+Blocking methods execute synchronously and non-blocking methods execute asynchronously.
+
+NodeJs only has one event loop, so to ensure that your application isnt blocked use callbacks to enable the use of worker threads. Go through diagram. We have I/O callbacks as it takes time to read a file, something from a network or something from a database
+
+FileSystem - node API, an inbuilt node library that dev use to read/write/modify files on your local machine - has both asynchronous calls and synchronous calls. filesystems use buffers to send large files from one place to another
+Line by line - readFile and writeFile - difference between blocking and non blocking
+
+The best coding practice is to use asynchronous code, as it helps to keep your app active and not blocked.
+Streaming API  - read or write files, chunk by chunk (using a buffer)
+We use pipe to allow a program to read from one file and write into another.
+
+
+when serving a whole folder to the server from your local machine using node, you will need https://nodejs.org/api/path.html - nodeModule 
+The path module provides utilities for working with file and directory paths.
+
+Client server
+We access the internet through our browser - we make requests to the online web servers and they respond by sending pages back to us
+We can use Node to emulate and develop our own web servers locally - similar to the http-server ./ module in the first module.
+except we can do all of this in a js file and return a html (or serve a html as the front end). 
+
+Client makes a request to the webserver - the webserver responds to the webclient and sends back the information that was asked of it. 

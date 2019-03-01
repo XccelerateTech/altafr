@@ -1,0 +1,76 @@
+Promise
+
+Javascript is a single thread language - will execute one function block at a time.
+
+synchronous code will cause your page to cascade slowly as it forces Javascript to finish a statement before moving the thread to a new function.
+This isnt a massive issue if the synchronous code is fast, but what if it changes to 3300ms.
+This would block your javascript code 
+
+In nodeJS, we have asynchronous functions and calls - writeFile- is aysnchronous, when javascript executes the code it doesnt have to wait for the function to complete.
+Instead it passes the method to the event queue so that it can move to the next function - wont wait for the asynchronous call.
+
+NodeJs like Javascript has one thread. 
+in the motivation file, ask what will occur in the code.
+
+fs.writeFile will take longer  - so we wont see any text in the abc.txt file.
+
+We need to use callbacks to make unblocking code.
+wrap the statment in the callback function
+tell the function, to execute itself and then call me back so I can see the result.
+
+readFile is an asynchronous call and still wont run anything when you call it.
+You must wrap it in a callback so that you can access information following the completion of the function.
+
+This is basically callback hell, making the code unreadable, ugly and just in general not very nice.
+
+So now we use promises
+blocking (slow functions which block the execution of other functions) / non blocking functions are fast 
+
+generally when doing io - input/output you read the database, write to the database etc, these actions are slower.
+
+Promise - new feature of ES6 - helps to solve the problems of multiple callback hell.
+
+Go through example line by line - remember promises must have the .catch(err)
+use .then .catch ==> chain events so you're not always there.
+
+Axios example very similar to prefer go through line by line
+
+example promise - 
+
+we use new Promise (resolve, reject) - new like instances - resolve and reject signify if the promise works or does not. resolve and reject are functions, like the callback functions we looked at previously. 
+promise.then() - allows chaining of promises, fo this then do that etc.
+so on the example, there are three promises in total. 
+
+Concept
+click slowly and explain how each step works if there are errors we skip the .then preceeding to get to the .catch
+go through line by line how it works one click at a time. catch will not execute without failure - no failure, no need for catch.
+
+a promise that returns a value or another promise this can be chained.
+in the chain, you can pass a value or a promise into the next .then(), works relatively intuitavly
+
+example.
+nugget.eat() promise passed to another .then
+in reality we might use axios - .get
+after its finished then the .then runs.
+
+concept map of how promises work  - different paths of resolve or reject.
+
+syntax and how a promise is actually made.
+To use a promise in this syntax example.
+We make a promise and assign to myFirstPromise
+simulates asynch behavior by using a timeout 
+
+complicated mcdonald 
+what happens at the first catch? does it end the whole code? or does it keep going?
+if nothing goes wrong on first two promises it will not be caught. and will go through all the .then's
+
+the first catch will catch errors happening before the .catch - if there is an error above itll catch it
+the last .catch will grab errors from the two .then above it.
+
+second.catch() depends on what .leave() function does
+
+we use a promise to chain commands - eg
+if you're getting data from an API then you can chain on multiple functions and methods
+main reason is to avoid callback hell.
+Promises are the convention for most libraries and modules made by developers.
+

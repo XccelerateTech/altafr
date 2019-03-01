@@ -1,0 +1,647 @@
+Recap of yesterday:
+
+Use the counter files:
+
+App.tsx above the Add Counter button:
+
+<input type='text' />
+
+Now this looks and feels like a regular html element, however the logic that we would use in node, to access the value is quite different to what is possible in React. 
+In node we might assign the div an id and use jquery to grab the value etc.
+
+You can only extract the value once it is stored in the state in React.
+
+Update the state in the constructor of app.tsx
+
+this.state = {
+    nameBoxValue: '',
+    numberOfCounter: 0,
+};
+
+now update the input to accept the value of nameBoxValue:
+
+<input value={this.state.nameBoxValue} type='text' />
+
+This will mean we are unable to type anything when we look at our browser. There is no effect on key down, as the value of the input is assigned to the state of nameBoxValue which is an empty string.
+
+In some frameworks there is two way binding, where when we assign this value we are able to change the input, this does not happen in React, so there is no magic.
+
+
+What we need to do is assign a handler on the input and define the function that will handle the event
+
+
+<input onChange={this.onNameBoxChange} value={this.state.numberOfCounter} type='text' />
+
+below (addCounter):
+
+private onNameBoxChange = (e) =>{
+    this.setState({
+        nameBoxValue: e.currentTarget.value
+    })
+}
+
+We know that this is an event, but what is the type of the event? it should be React.ChangeEvent<HTMLInputElement>
+
+private onNameBoxChange = (e: React.ChangeEvent<HTMLInputElement>) =>{
+    this.setState({
+        nameBoxValue: e.currentTarget.value
+    })
+}
+
+So what is this doing?
+For our event we define, that it is a React.ChangeEvent (some event), and then we are required to add a type generic to specify the type of the current target. Technically you can use any. But this is the best practice.
+
+From yesterday and today, you may have realised that when we add an input without assigning a state to it, we are allowed to type, however once the state is added without any handlers we are unable to type any more! Why is this? why is it so much more difficult?
+
+As said before this is because whatever value you assign to the state is what the input value will be if you set value={this.state.nameBoxValue}.
+
+As of right now we have a for loop to name each counter as they are added into our application. But what if we wanted to use our input to assign an individual name to each counter?
+
+In inerface (IAppStates) We are going to change our state numberOfCounter as it is not an appropriate key anymore: 
+
+interface IAppStates {
+    counters: string[];
+    nameBoxValue: string;
+}
+
+Class App extends React.Component <{}, IAppStates> {
+    public constructor(props: {}){
+        super(props);
+
+        this.state = {
+            nameBoxValue: '',
+            counters: [],
+        }
+    }
+}
+
+Now we also need to change our logic for adding a counter. 
+
+private addCounter = () => {
+    this.state.counters.push(this.state.nameBoxValue);
+
+    this.setState({
+        nameBoxValue: '',
+    })
+}
+
+Now we can do it this way, and it could work, in fact it might work, but you need to consider how React works. React creates a virtual DOM first then it will compare to the actual DOM. Why does it construct the virtual DOM? The reasons React would make a new virtual DOM is that either the state or the props have changed so its trying to update the real DOM.
+
+this is basically what react is doing:
+this.state.counters === this.state.counters // show them then delete the code. See if they are strictly equal.
+
+If we use .push we are mutating the actual instance and value of counters, we are not reassigning so react may miss the change to see if we have updated or not. So we should not do this. We need to know a new way to modify an array:
+
+private addCounter = () =>{
+    this.setState({
+        counters: this.state.counters.concat([this.state.nameBoxValue]),
+        nameBoxValue = '',
+    })
+}
+
+So here we use the concat method, it will push the value in the state, this.state.nameBoxValue into the array of counters and returns a whole new array for you. so now we have two counters, one we have not mutated or touched, and the new array that was just generated. So after this function React will check the states and props, oh the state has really changed, so it rerenders the whole virtual dom. 
+
+now no more need for the for loop.
+ and also in the render (){
+
+ }
+
+ in Counter.tsx change the interface:
+ interface ICounterProps {
+     name: string;
+ }
+
+ also in the render(){
+
+ }
+ Counter { this.props.name }.....
+
+ { counters } should be changed to:
+ { this.state.counters.map(counterName => {
+     <Counter name={counterName} />
+ }) }
+
+This is possible because of the array that stores the names. Then we use map to return the array of counters. If we have three names in the array, we will have three counters. 
+
+Add a few counters with names, and one without. The one without the name will look badly formatted. So we should change the spacing.
+
+in counter.tsx:
+Counter{ ( this.props.name === '' ) > '' : ' ' + this.props.name }: {this.state.count}.....
+
+this is a conditional, its an expression, you cannot use if.
+If this.props.name === to nothing then return nothing, otherwise return the name, with a space. This should fix the spacing issue.
+
+Now we have the React Router, right now, we have one page, so how can we make two? If we just look at React, which is just a view finder, it wont be able to tell us how to render different pages. Before React Router, you could use an if else statement.
+
+Eg:
+If we had a counter page and an about us page. In app.tsx
+
+
+public render() {
+    return (
+        <div className="App">
+            <div>
+                <a href="" onClick={this.changeToAboutUs}>About Us</a>    <a href="" onClick={this.changeToCounters}>Counters</a>
+            </div>
+            <input onChange={this.onNameBoxChange} value={this.state.numberOfCounter} type='text' />
+            <button onClick={ this.addCounter }>Add Counter </button>
+            { this.state.counters.map(counterName => {
+                <Counter name={counterName} />
+            }) }
+            </div>
+    );
+}
+
+Right now we have the hyperlinks but no handlers. So we need to add the methods and logic required to change our view.
+
+change interface, and states to include currentPage state, so we can switch between two states for the two pages. 
+IAppStates:
+
+interface IAppStates{
+    counters: string[];
+    currentPage: string;
+    nameBoxValue: string;
+}
+
+class App extends React.Component <{}, IAppStates> {
+    public constructor(props: {});
+    super(props);
+
+    this.state = {
+        counters: [],
+        currentPage: 'aboutus',
+        nameBoxValue: '',
+    }
+}
+
+private changeToAboutUs (){
+
+    
+}
+
+private changeToCounters (){
+
+
+}
+
+These updates will make it easier for us to generate the new pages after we have clicked on the hyperlinks.
+
+add under the hyperlinks in App.tsx
+
+{ ( this.state.currentPage === 'aboutus') ? 'About us is here' : (
+    <div>
+     <input onChange={this.onNameBoxChange} value={this.state.numberOfCounter} type='text' />
+            <button onClick={ this.addCounter }>Add Counter </button>
+            { this.state.counters.map(counterName => {
+                <Counter name={counterName} />
+            }) }
+    </div>
+) }
+</div>
+
+You can do it this way. All we need is the logic for our methods:
+
+private changeToAboutUs = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    this.setState ({
+        currentPage: 'aboutus',
+    })
+}
+
+private changeToCounters =(e: React.MouseEvent)=>{
+    e.preventDefault();
+    e.stopPropagation();
+    this.setState ({
+        currentPage: 'counters',
+}
+
+onClick events are mouse events in React. 
+
+This should work, and the counters should persist, with the names and the data. Though this works, it doesnt look great on the client side. With this in mind there is also no back button. With a normal application we should have a back button. So how can we have multiple pages??
+
+We add the React Router. In the project directory:
+
+yarn add react-router-dom @types/react-router-dom
+This will add a new plugin, the react-router.
+
+React Router does two things, the first is to what we are trying to do, but in a nicer way (creating two pages from having a variable like current page). In Addition to this it will look at the address bar and manipulate it, it could change it. 
+
+For all address bars there is something called html5 history api mdn: google this
+
+https://developer.mozilla.org/en-US/docs/Web/API/History_API
+
+This api can manipulate the history and it can also push the history as well. 
+Show them some of the documentation, then copy and paste this into the console of localhost 3000:
+
+var stateObj = {foo: 'bar'};
+history.pushState(stateObj, "page 2", "bar.html");
+
+you will see the addressbar has changed, the page hasnt changed, but we have used javascript to manipulate the URL, and it will also activate the back button in our application. 
+you could add any string that you want to.
+
+var stateObj = {foo: 'bar'};
+history.pushState(stateObj, "page 2", "the-most-secure-login-page-ever.html");
+You cannot change the host name using this method. the appended string is not real.
+
+To install React Router, find the entry point of the application. 
+After yarn add in index.tsx:
+
+import {
+    BrowserRouter as Router 
+} from 'react-router-dom'
+
+ReactDOM.render(
+    <Router>
+        <App />
+    </Router>,
+document.getElementById('root') as HTMLElement
+);
+registerServiceWorker();
+
+Since the address bar of the browser can only have one address for each individual page, you must find the entry point of the application, so that React-router-dom can take control of the address bar.
+
+We will need to import more components / attribuites from 'react-router-dom'. In App.tsx:
+
+import {
+    Link,    
+    Route,
+} from 'react-router-dom';
+
+We will discuss Route first, Route is defining something like a page, this code should be placed in the render (){ method, before the currentPage code.
+
+<Route path='/aboutus' component = {AboutUs} />
+
+So we need to create a new file, and a new component for the AboutUs page make: AboutUs.tsx
+
+import * as React from 'react';
+
+export default class AboutUs extends React.Component {
+    public render (){
+        return (
+            <div>
+            About us is here
+            </div>
+        );
+    }
+}
+ 
+ Now we should also import AboutUs into App.tsx, type script can help with this. Or add this in App.tsx imports:
+
+ import AboutUs from './AboutUs';
+
+Maybe we should also create a counterPage, so that we can use our router, to send the correct page to the user, create a page: CounterPage.tsx
+We will need to copy all of the logic from the App into the counter page. (states props etc.)
+
+import * as React from 'react';
+import Counter from './Counter';
+
+interface ICounterPageStates {
+    counters: string[];
+    nameBoxValue: string;
+}
+
+export default class CounterPage extends React.Component <{}, ICounterPageStates> {
+    public constructor(props: {}){
+        super(props);
+
+        this.state={
+            counters: [],
+            nameBoxValue: '',
+        };
+    }
+
+    public render (){
+        return (
+            <div>
+        <input onChange={this.onNameBoxChange} value={this.state.numberOfCounter} type='text' />
+            <button onClick={ this.addCounter }>Add Counter </button>
+            { this.state.counters.map(counterName => (
+                <Counter name={counterName} />
+            )) }
+    </div>           
+        );
+    }
+
+    private addCounter = () => {
+        this.setState({
+        counters: this.state.counters.concat([this.state.nameBoxValue]),
+        nameBoxValue: '',
+        })
+    }
+
+  private onNameBoxChange = (e: React.ChangeEvent<HTMLInputElement>) =>{
+    this.setState({
+        nameBoxValue: e.currentTarget.value
+    })
+}
+}
+
+In App.tsx
+
+no need for any states or props:
+
+class App extends React.Component {
+    public render() {
+        return (
+            <div className="App">
+                <div>
+                <a href='' onClick={this.changeToAboutUs}> About Us </a>
+                <a href='' onClick={this.changeToCounters}> Counters </a>
+            </div>
+
+            <Route path='/aboutus' component={AboutUs} />
+            <Route path='/counterPage' component={CounterPage} />
+            </div>
+        )
+    }
+}
+
+So we have defined our pages now, now we need to use the Link terminology to link our pages into our application. 
+To do this we change the hrefs on App.tsx:
+
+<Link to='/aboutus'>About Us</Link>
+<Link to='/counterPage'>Counters</Link>
+
+So now when we click counters it will generate the counters page, and if we click the aboutus, it goes to the aboutus page. As we have used React-Router we can now use the back and forward button, also the query string at the top (the URL) will be manipulated by react.
+
+App.tsx:
+
+import * as React from 'react';
+import AboutUs from './AboutUs';
+
+import {
+    Link,
+    Route
+} from 'react-router-dom';
+
+import './App.css';
+import CounterPage from './CounterPage';
+
+class App extends React.Component {
+    public render() {
+        return (
+            <div className="App">
+                <div>
+            <Link to='/aboutus'>About Us</Link>
+            <Link to='/counterPage'>Counters</Link>
+            </div>
+
+            <Route path='/aboutus' component={AboutUs} />
+            <Route path='/counterPage' component={CounterPage} />
+            </div>
+        );
+    }
+}
+
+export default App;
+
+You can see the code is very clean and set out nicely, this is because of the modular pattern we have written. We define the pages individually so you only see the code need for each component. 
+
+Switching will work without internet. This is localhost, so you can see this, but if we look at the network tab in our chrome browser, we can see that upon each request we are not sending any additional requests or Ajax calls. Unless we press reload. 
+
+Right now though we have no persistance and I will be going over this later. We can use local storage to store these things, but if you look at next week we will introduce redux which will solve this issue.
+
+Every time we click between about us and counter, React actually goes through all the steps talked about yesterday, first it will destroy the whole page, then it will re construct the page. 
+
+Now for something difficult.
+Say we want to define different counter pages for different countries. We follow the method below, now despite the face the pages are different there is no 
+
+        <Link to='/aboutus'>About Us</Link>
+        <Link to='/counterPage'>Counters HK</Link>
+        <Link to='/counterPage'>Counters SG</Link>
+        <Link to='/counterPage'>Counters JP</Link>
+        <Link to='/counterPage'>Counters AUS</Link>
+
+        <Route path='/aboutus' component={AboutUs} />
+        <Route path='/counterPage/hk' component={CounterPage} />
+        <Route path='/counterPage/sg' component={CounterPage} />
+        <Route path='/counterPage/jp' component={CounterPage} />
+        <Route path='/counterPage/aus' component={CounterPage} />
+
+        This seems like the best way to create different counters without having to make new pages for each country, so we would recycle the component and keep using it.
+        You might encounter errors when using react and typescript, sometimes, when you know something in correct and it still throws an error just restart your vs code and it should fix the problem.
+
+        So how can you distinguish which counter page we are on?
+        We could hard code like above, or:
+
+        <Route path='/counterPage/:country' component={CounterPage} /> 
+        //looks like express router. 
+
+        Students sometimes get confused here, it looks very similar to express routing, but you need to note, this has nothing to do with express, here we have react router which controls the client side, express router controls the serverside. They are completely different but share similar concepts and syntax.
+
+        Above we defined the parameter country, it is looking for a string, so whatever we type in the url:
+        localhost:3000/counterPage/whatever...
+        it will render the counterPage. country is a placeholder.
+
+        To get it back, the router will pass the parameter to the props, we will need to define a new counterPage props in our CounterPage.tsx so that we can pass this parameter into out CounterPage component. 
+        The props is now not just a set of empty braces.
+        In CounterPage.tsx:
+
+        import {
+            match
+        } from 'react-router-dom'
+
+        interface ICounterPageProps {
+            match: match;
+
+        }
+
+        interface ICounterPageStates {
+            counters: string[];
+            nameBoxValue: string;
+        }
+
+        export default class CounterPage extends React.Component <ICounterPageProps, ICounterPageStates> {
+            public constructor(props: ICounterPageProps){
+                super(props);
+
+                .....
+            }
+        }
+
+In our interface ICounterPageProps we have a variable name called match, and a type called match. type is the right left is the variable name. there is an underline as we need to define type generic. We will also need to change the logic in our component:
+
+  interface ICounterPageProps {
+            match: match <{country: string}>;
+        }
+
+So here we are defining the route in the route path, when you pass the props, we require a country string 
+Say we want to add the country name after the add counter button.
+
+ public render (){
+        return (
+            <div>
+        <input onChange={this.onNameBoxChange} value={this.state.numberOfCounter} type='text' />
+            <button onClick={ this.addCounter }>Add Counter {this.props.match.params.country} </button>
+            { this.state.counters.map(counterName => (
+                <Counter name={counterName} />
+            )) }
+    </div>           
+        );
+    }
+
+Now we can retrieve the param in the URL and use this code to append the string to our add counter button.
+
+Now we know how to use Link, Route and Params.
+
+Now I can teach you how to give users an easter egg, currently we need to click on all of our links to switch them from page to page, but we can make our text dynamic for our users. If they click the us more than 5 times then we can direct them to a new page or send them a message. Maybe we want to send them to a copy right page.
+
+Above routes add this:
+
+<Route path='/secretPage' component={License} />
+
+create a page called License.tsx
+
+import * as React from 'react';
+
+export default class License extends React.Component {
+    public render (){
+        return (
+            <div>
+Wow you made it, here is our License
+    <pre>
+Copyright 2018
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+    </pre>
+
+            </div>
+        );
+    }
+}
+
+So now we have made the route as well as the page, we now need to handle the logic to send them to the page. This is all from AboutUs.tsx:
+
+About <span onClick={this.onUsClick}>us</span> is here
+
+As we are doing a click event we need onClick
+
+below the render() method,
+
+private onUsClick = () =>{
+
+}
+
+We will also need to add our state for the number of times clicked.
+
+interface IAboutUsStates {
+    usClicked: number;
+}
+
+export default class AboutUs extends React.Component < {}, IAboutUsStates> {
+    constructor(props: {}){
+        super(props);
+
+        this.state={
+            usClicked: 0
+        }
+    }
+}
+
+private onUsClick = () =>{
+   
+    if(this.state.usClicked ===4 ){
+        
+    } else {
+        this.setState({
+        usClicked: this.state.usClicked + 1
+    })
+}
+}
+
+So now we are counting each of the clicks. When it reaches five then we should change the page.
+So how do we change the page can we just use link? No not really....
+
+We should use the history object, manipulate history.
+So in out AboutUs.tsx:
+
+import * as History from "history";
+
+interface IAboutUsProps {
+    history: History.History;
+}
+
+export default class AboutUs extends React.Component < IAboutUsProps, IAboutUsStates> {
+    constructor(props: IAboutUsProps)
+
+
+
+private onUsClick = () =>{
+   
+    if(this.state.usClicked ===4 ){
+        this.props.history.push('/secretPage');
+        
+    } else {
+        this.setState({
+        usClicked: this.state.usClicked + 1
+    })
+}
+}
+
+
+So the history object is passed by reactRouter, this is not easy syntax to find or use, you import History from history, then you define it as history: with two uppercase History.History, this is quite difficult. 
+Though this is a fun example, you might need this type of logic in your projects, say you know the user is generating hundreds of counters and you know that this will impact performance, perhaps when the user clicks more than 20 counters you can prompt them and see if they actually want more counters. This is a programatic way to manipulate the history.
+
+Now React is becoming more and more complex, we have many pages and many properties that are not defined by you. So now we might need a debugger. If you need to debug, goto the sources in browser, then look for the orange folder, and then make break points (look in scope, closure) here you can manipulate the state and see all the properties passed. 
+
+We also have the react debugger, which is on our chrome source, while using this react debugger you can see the exact hierarchy that was defined in your react code, and you can see that Route is actually like an if condition, if the route matches a path then it will render the page in question. Not only does it render the path but also passes specific properties and values to it. 
+You can see all the props that are passed, all the state changes.
+
+How can we do 404?
+
+If the route path matches the url then the component will be rendered, no matter how many components match or the position, it will React will render the components. So how can we define the path for 404?
+
+At the bottom of App.tsx, 
+
+<Route component = {NotFound} />
+
+make a new file, NotFound.tsx:
+
+
+
+import * as React from 'react';
+
+export default class NotFound extends React.Component {
+    public render (){
+        return (
+            <div>
+            Not Found 
+            </div>
+        );
+    }
+}
+
+Easiest way is to not set a path, this will make it render when a path isnt defined, however it will also render if the path is defined, so we need a special syntax, called <Switch>
+
+        <Switch>
+        <Route path='/aboutus' component={AboutUs} />
+        <Route path='/counterPage/hk' component={CounterPage} />
+        <Route path='/counterPage/sg' component={CounterPage} />
+        <Route path='/counterPage/jp' component={CounterPage} />
+        <Route path='/counterPage/aus' component={CounterPage} />
+        <Route component={NotFound} />
+        </Switch>
+
+Now that we have implemented switch, once a path is matched, it will only load one component, so therefore the Not Found page/ component will only render if other paths are not found/ matched. 
+
+For other common react-router information you can check the documentation, though it is not in typescript you should understand the logic. The most difficult parts of typescript is defining the History in aboutUs.tsx, and defining the match in CounterPage.tsx, all other things are exactly the same as javascript. 
+
+There is alot you can look through, animated transations, custom links, modals Now we should be able to do the weekly assignment. 

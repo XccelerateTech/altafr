@@ -72,12 +72,15 @@ function generateThePeople() {
         if(http.readyState != XMLHttpRequest.DONE){
             return;
         } else if (http.status == 200){
+            let p = document.getElementById("randomUsers");
             console.log('third');
             let parsed = JSON.parse(http.responseText);
             let people = parsed.results.map(function(user){
                 return new User(user);
             });
             console.log(people);
+            // can take this our or style it nicely. 
+            p.innerHTML = JSON.stringify(people);
         } else {
             console.log('error occurred' + http.status);
         }

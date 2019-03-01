@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './App.css';
-import Board from './Board';
+import Board from './BoardNotNeeded';
 
 interface IGameStates {
   history: Array<{ squares: Array<string|null>}>,

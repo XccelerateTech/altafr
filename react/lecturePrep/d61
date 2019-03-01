@@ -1,0 +1,16 @@
+React-native creates mobile applications - an individual application that is installed onto a phone, not dependant on the browser, it will use the native features of the phone, camera, memory etc.
+
+Hybrid application: do development once so that it works for android and ios --> like ionic (everything is rendered in a webview, a layer on top of native architecture)
+Native application: uses native language and code fast and responsive, can use all features of the phone - seperate development for ios and android - expensive to maintain both 
+Web app: can be mobile responsive, but is a browser application 
+
+mobile app: download and install from app store 
+
+react native mobileapp: takes all the good things from react, built ontop of native framework but it is fast, will still use a virtual dom to create ios as well as android native elements 
+
+drawbacks of React Native- still in development, always changing, new releases every week! Thing change very quickly and therefore things may break. Though there is a layer onto of native code, we might need to write native code. For mobile apps, you need to ask users to update from the app store
+
+Installation - 
+
+windows configure android home, computer settings, envrionment settings - set path of ANDROID_HOME
+mac need to add lines to add ANDROID_HOME - to bash profile

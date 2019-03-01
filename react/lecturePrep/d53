@@ -1,0 +1,420 @@
+Prop: Is where you get the variable from the parent component
+State: store the state inside its own component, we have control of state, but not props.
+
+new create-react-app
+
+yarn start
+show them the basic app as it has been created.
+
+App.tsx
+
+lets make a new component. a new file. 
+Clock.tsx
+
+In App.tsx
+import Clock from './Clock' // at the top
+
+below the <p> and before end the of the </div>
+<Clock />
+
+in Clock.tsx
+
+import * as React from 'react';
+
+class Clock extends React.Component {
+    render(){
+        return(
+            <div className="Clock">
+            {this.props.time}
+
+
+            </div>
+        );
+    }
+}
+
+export default Clock;
+
+in App.tsx, 
+
+<Clock time={(new Date()).toTimeString()}
+
+We are passing the time as a prop from the parent element to affect the child.
+
+Now we should be able to see the time, as we can see the passing the time value from the parent, we are using props.
+
+If we want to change the time dynamically, every second, we will need to do this in the child componet.
+
+In Clock.tsx:
+class Clock extends Component {
+    constructor(props){
+        super(props);
+
+    }......
+
+We are calling the constructor of the React.Component, we are passing props through this component to allow us to initalize some details, the states.
+After we passed props, we can use this.props variables.
+
+class Clock extends Component {
+    constructor(props){
+        super(props);
+            this.state={
+                state_time: this.props.time
+            }
+    }
+
+    render(){
+        return(
+            <div className="Clock">
+            Props time: {this.props.time}
+            <br />
+            State time: {this.state.state_time}
+
+
+            </div>
+        );
+    }
+}
+
+Right now we both the props time and the states time will be the same, as we have set the state to be the value of this.props.time.
+
+ow we need to make a method to change the state.
+
+One reason we use arrow syntax here is because it will automatically bind this for us so we dont need to worry about the this variable referring to the functiton and not the class.
+
+private tick = () => {
+        this.setState({
+            state_time: (new Date()).toTimeString()
+        })
+
+}
+
+componentWillMount = () => {
+    setInterval(()=>{
+        this.tick();
+        },1000)
+    }
+
+
+
+Here we are calling the state constructor, so whenever we call this method of tick it will find the current time for us.
+To trigger the firing of this tick event we have created a method which uses setInterval to call our tick function. 
+
+Save and refresh, state time, will update every second, while props will remain the same. 
+
+Here we are using the interval to update the state of the component within our component, we cannot change the state from the parent. Moreover we cannot change the prop from the component, thus for a dynamic timer we must set and changing the time from our child component, not the app.
+
+What is componentWillMount?
+
+React Component lifecycle.
+https://cdn-images-1.medium.com/max/1600/1*u8hTumGAPQMYZIvfgQMfPA.jpeg
+
+Everytime we render a component onto the screen, first it will call the constructor, then it will call componentWillMount before we have called the render function. 
+So we can define componentWillMount as a function which sets the interval. Before rendering we set the interval in componentWillMount, with this in mind it is a good place for us to update the state as well. 
+
+Next we have componentDidMount and all of the green signs. These are triggered by differnt events. Eg: if the props have changed from the parent then the componentWillReceiveProps,  If the state has chnaged internally then it will call componentUpdate.
+
+If the props or the state variables have been updated then React will react to the changes of the props and state variables and will call the according function.
+Then react calls render to render the new dom.
+
+
+eg under componentWillMount:
+
+componentWillMount = () => {
+    console.log('componentWillMount')
+
+    setInterval(()=>{
+        this.tick();
+        },1000)
+    }
+
+componentDidMount =()=>{
+    console.log('componentDidMount')
+}
+
+componentDidUpdate = () => {
+        console.log('componentDidUpdate')
+
+}
+
+Also change the constructor:
+
+class Clock extends Component {
+    constructor(props){
+        super(props);
+
+        console.log('constructor');
+
+            this.state={
+                state_time: this.props.time
+            }
+    }
+
+    render(){
+        console.log('rendering')
+
+        return(
+            <div className="Clock">
+            Props time: {this.props.time}
+            <br />
+            State time: {this.state.state_time}
+
+
+            </div>
+        );
+    }
+
+save and run with the console running.
+This will show that react is always calling these react methods.
+This is the follow of our react application
+
+So the flow of a react project is first, constructor, then componentWillMount, then componentDidMount, render then componentDidUpdate.
+
+Every time our prop, state or application changes, then the render will be called along with the componentDidUpdate
+So the flow is the same as the image.
+
+Now you know these methods exist you can try to understand how to write our React applications.
+
+componentWillMount is a great place to set our state variables. 
+
+After the method componentDidMount, if you want to trigger effects or call a asynchronous method like an ajax call where we make the call, wait for the result and then change your state variable accordingly.
+This is the flow of the component lifecycle, you need to specify when you want to do something.
+
+UnMount:
+
+important for an interval, if we try to unmount the component, we will get an error that says memory leak.
+
+in app.tsx.
+
+class App extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            showClock: true
+        }
+    }
+
+    render(){
+        return(
+            <div className='App'>
+                <header className='App-header'>
+                <img src={logo} className='App-logo' alt='logo' />
+                <h1 className='App-title'> Welcome to React </h1>
+                </header>
+                <p className='App-intro'>
+                To get started, edit <code>src/App.js</code> and save to reload.
+                </p>
+                {}
+                { this.state.showClock? <Clock time={(new Date()).toTimeString()}/>:null}
+        )
+    }
+}
+// if this.state.showClock? is true then we will render. First we have the condition then a question mark, if this is true it does the function before the colon. If evaluates to false then you use the code after the semi colon, the null.
+Now we should add a button so that we can change the state of showClock
+
+<button onClick={toggleClock}> Toggle </button> // add before the closing div.
+
+add above the render()..
+
+private toggleClock = () =>{
+    this.setState({
+        showClock: !this.state.showClock
+    });
+}
+
+This method allows us to fire off the negative of this.state.showClock. So when I click it, if the clock is showing it should disappear, on the other hand if the clock is not there, then it should appear when I click the toggle.
+
+save and seee.
+We should make the clock dissappear, though this will cause an error which originates from componentWillMount, this is because we have set the interval to update every second so that the time is rendered dynamically. 
+
+
+edit this code:
+
+componentWillMount=()=>{
+    ....
+    this.clockInterval = setInterval(()=>{
+        this.tick();
+    }, 1000)    
+
+}
+
+also add in this code:
+
+componentWillUnmount =() => {
+    clearInterval(this.clockInterval);
+}
+
+If you recall the timers from web we would need to clear the interval to stop the timers from ticking, this is the same concept here, we need to clear the interval when we unmount the timer so that the tick() method is not called every second.
+
+So every time the component unmounts we clear the interval, which will remove the error when we toggle the clock to disappear.
+
+So far we have been calling setState to change our state, you may be wondering why do we do this? why dont we change the state directly using something like this:
+this.state.showClock = !this.state.showClock
+
+this code in toggleClock = () =>{
+
+}
+
+replacing (commenting out the previous code we had here)
+This will cause our code to break, this is because the state has changed but react doesnt know this has happened. 
+This is due to us not using this.setState.
+This is because of the way that React and javascript work in tandum.
+
+in a new tab console:
+
+var a = { value1: 1, value2: 2};
+var b = { value1: 1, value2: 2};
+
+So we want to test: a == b; this must be try right? as the objects are the same?
+but it is returned false. 
+
+in javascript, for objects and arrays, they are only references, the information assigned to the variable is referencing the object or array. And because they are referencing two separate objects, even though they have the same values, these are two different objects. 
+
+but if we do:
+
+c= a
+c would be assigned to the same value that a was assigned to 
+now:
+a==c would evaluate to true, while
+b==c evaluate to false still as they are not referencing the same object.
+
+The way react works, is that it is going to check in a way like this:
+
+this.state == previousState (we dont see this variable, this is what is happening behind the scenes in react. )
+So it is compairing to see if the state has been assigned to a new state. 
+
+if we go back to the browser console and type:
+c.value1 = 10
+
+a == c 
+would still equal to true this is because they are referencing the same object. So when we wrote c.value1 = 10 we also changed the object a was referencing as both a and c referenced the same object. 
+
+So looking back to React, it will not know that the state has been updated so it wont fire off the necessary functions to update and rerender the component that was changed. 
+
+back to App.tsx
+comment out the code that breaks the component, uncomment:
+
+this.setState({showClock:!this.state.showClock});
+
+So we should set the state in this manner
+the code above is basically assigning this.state to a new object.
+you can replace the code above with below to show them that they are doing the same thing. 
+
+this.state ={
+showClock:!this.state.showClock
+}
+
+but this method is not encouraged. If you are changing the state please use this.setState, this does it for you automatically for you.
+
+Also if you have multiple variables and you are using setState you target a specific key and value pair as opposed to having to change the whole object. 
+setState, looks at what you have in the states, and if there is conflict, it will update with the new value and overide the previous value.
+
+only do this.state = {
+
+}
+in the constructor!
+
+leave this.setState({showClock:!this.state.showClock}).
+
+Now we talk about form, with react, which is different to native dom elements with jquery or vanilla javascript.
+
+If you have a form element in react, you really should save the variable in the state variable, as then you can submit the values with an ajax call. Otherwise you cannot get the actual values inside the form.
+
+An important note, in componentDidUpdate, we do not want to use this.setState, because if you look at the cycle, you will cause an infinite loop. It will call state change, then it will do it again and again as you have updated the change right before that condition.
+
+You can have ajax calls and other logic, but do not set the state there. 
+
+
+comment out clock code in app, and the toggle.
+
+in App.tsx:
+
+import Form from './Form';
+
+add:
+<Form/>
+
+above the closing div
+
+create a new file called form.tsx:
+
+import * as React from 'react';
+
+class Form extends React.Component{
+    constructor(props){
+        super(props);
+        
+        this.state ={  
+            name: 'Please enter your name'
+
+    }
+}
+
+render () {
+
+return (
+    <div>
+    <input type='text' value={this.state.name}/> //input is a native dom element, type='text' gives you a text field.
+    </div>
+)
+}
+}
+
+export default Form;
+
+Show them this in the browser, which throws and error. 
+
+We currently have a form with a value= {}, and I have not changed the state, and we dont have a method to do this. 
+
+So when we type right now, nothing will change. 
+
+value={this.state.name}, this is not changing when we are writing in the input. so we need a handler.
+
+Under the constructor and before render:
+
+private handleTextChange = () => {
+
+}
+
+then update the input 
+add after 'text':
+onChange={this.handleTextChange} 
+
+As this is an event, we pass an event through our event handler.
+
+private handleTextChange = (e) => {
+    e.preventDefault();
+    this.setState({
+        name:e.target.value
+    });
+}
+
+this is grabbing the dom element, to get the new value
+if we save it,
+
+now we can change the text feild 
+On this change the onChange handler in our text input fires the handleTextChange method, which in turn calls the setState method to set the new value to name.
+
+This is how we create a form element in react.
+on the cms, we show:
+
+this.handleChange = this.handleChange.bind(this);
+
+this is one method to do this, because if we do not have the bind this, whenever we call this.handle change, that calls the function, but the this, is not referring to the class, but to the function, the scope would be different.
+
+The reason we didnt have to do this, is because we are using es6 arrow syntax which automatically binds the this
+
+If we change this function from arrow syntax to es5 then we wil get an error, show them
+
+also show them the fix with the bind method. 
+
+same for textarea, change the input ot text area. we have to have value inside this.state.
+app.tsx
+call this.setState to change the value.
+
+props.children
+Currently we only know <Form/> a self closing component, but we also have
+<Form>This is the children</Form>
+What ever is between opening and closing tags will be passes as props to the children of this component as this.props.children
+
+add {this.props.children} after the opening div, form.tsx

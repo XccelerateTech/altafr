@@ -1,0 +1,184 @@
+html canvas module api - built into most browsers
+
+canvas is a simple html tag - <canvas></canvas>
+the text is to say if your browser does or does not support canvas
+there is a 3d  -  but we are focusing on the 2d
+
+explain code on the ppt
+
+canvas uses a coordinate system, slightly different, y goes from top to bottom, the x is the same
+left/ right hand top and is 0,0
+
+Go through the different shape methods
+
+explain quadratic curves etc,
+you define three points, the two black then the red, the red represents the tangent
+bezier curve has two red dots instead of one, still are tangents to the line
+
+think of how you would draw things in geometric classes,
+eg triangle, you will need three points to create a triangle, think of the steps you need to draw a shape then write code
+
+think about how you need to capture mouse events, to create a framework of shape creation
+compare actions click drag release (a common action) to mouse events
+
+mousemove you must differenciate between dragging and not dragging 
+ie right click hold and move versus click then move.
+
+mouseup stop clicking, mouseleave when you leave the element.
+
+you can make a mobile version but you must use hammer js
+
+add handlers for each event, when something happens how do you capture the event
+
+strategy pattern to develop your application
+blue whole canvas app. 
+red a file which defines the mouse event handlers
+yellow are strategies. basically plug and play
+mouse event handler switches between different strategies depending on what the user presses (maybe buttons)
+if you click rectangle you can click a rectangle
+
+code Snippet
+line by line explaination
+we show the code
+
+Why are there two canvas's? draft and real.
+when using canvas once you draw something you cannot remove it, unless you've implemented an undo system in the javasript/jquery
+when using most applications you will preform your mouse events but when you're finished you have a confirming action telling you the shape is done
+like the mouse up event on dragging a line etc
+
+two canvas - one real and one draft,
+anything you draw before you confirm (mouseup) everything happens on canvas draft only
+once you confirm you put it on canvas real. 
+You need two! once a shape is drawn, onto canvas real it basically becomes and image, 
+it becomes difficult to separate elements once they are drawn onto canvas real
+undo redo, take a snapshot, every mouse event so that you can load and reload if need be
+if you dont set this up, then you cannot do this function
+
+one canvas structure - explain some things.
+
+the way you confirm is up to you, perhaps you set it up so when you press enter you confirm onto the real canvas - event handler
+
+
+code along step by step
+everyone should do the code along before you decide what you want to implement.
+that way you waste less time on difficult functions you cannot complete.
+
+if code doesnt render on browser, you can copy and paste into the console. besure to change all ctx, and defined variables
+show how you can change the elements using the console, 10,10,1000,1000
+
+threejs is more difficult but if youre interested then you can do it at threejs.com
+
+canvas is a standard html api, you can go to MDN to look at the documentation
+you can follow working examples and change what you want for your code.
+
+show some documentation on shapes. on MDN
+
+if it doesnt show copy and paste doe into console changing the right variables
+moveTo defines starting point 
+lineTo defines the point where you want to move and stroke draw it.
+
+there are multiple ways to define the coordinates, you can use an array to specify coordinates
+draw using functions or mouse events so that you can draw easily without having to define every element in hard code.
+this method is primitive
+go through how to do it, stokeStyle is colour
+explain shape, quadratic curve and then an open square
+example of bubble from MDN
+plus all other shapes
+
+we should write functions, not hardcode behavior, we can have a generic rectangle function
+which takes multiple inputs to define the starting point, endpoint, dimension and color.
+call a function which draws a shape but has different parameters so it can draw multiple types of the same shape.
+
+data hiding concept, you want to protect you program from being modified by unwanted code. 
+Encapsulation is important.
+MDN has a great tutorial
+transformation is very difficult as it using a matrix.
+
+
+Capture mouse event
+our application should capture mouse events - create canvas
+capture mouse events to define coordinates and how shapes are formed, but be careful
+think about how mouse actions can be chained to make a shape.
+
+we need a variable to define is a mouseevent is dragging or not! once you mouse up or you leave canvas you wont be dragging
+if mouse move / is mouse move while dragging is two differnt actions
+this is the hard part - we shouldnt mix all elements of the code 
+
+we should modulise our code -- make classes
+canvas common -- define real and draft and get context 2-d
+
+current function variable will store the function currenltly being used by the user, ie circle square or line
+when we have a mouse down event, we call the mousedown event of the current function
+
+one function, draw rectangle line by line
+PaintFunction is the base call with mouseevents
+mousedown origonal coordinates -on the canvas draft when released it is drawn on the canvas real
+once released it is on canvas real show on cms
+explain on dragging is refreshed every tenth of a second before it is defined in canvas real
+
+once you want to change the function you are drawing you may have a handler or button defining the chnage in the current drawing function.
+
+PaintFunction empty class - we dont want the application to fail so we have an empty class with all the mouseevents we need.
+it is a strategy due to Strategy pattern 
+show the link
+
+the css cannot define the attribute width or height of canvas it should be defined on the html element,
+otherwise the coordinates might fail and so you might not be able to get correct coordinates when drawing
+
+css can define other things.
+canvas draft has to be transparent!
+
+add buttons to make the the differnt functions accessible
+the current function changes on the button being pressed, this code must be in the html
+but the function of the button should be modualised and put into a seperate JS that extends from the class paint function
+show simple canvas on cms
+
+work on download the image as a picture if you want?
+possible features!
+look at examples!
+if they use ReactJs dont look at thier mouse handlers will be differnt from the CMS
+undo
+text
+image upload
+pixel manipulation so that you can change minute elements
+simple tutorials on cms
+look at other material to help you!
+
+mobile support is very hard
+as its finger handlers not mouse.
+if you add mobile support its hard, you will need to specify the finger events
+
+
+firebase storage to store image, without a backend
+so that you can reuse the image on differnt computers
+look at the documentation
+you should focus on the UI/UX, how it looks is a measure of the application!
+look at a few sophisticated canvas apps.
+
+storage in local storage - storage within your own browser vs storing in firebase and calling the api
+locally if you undo you call form your browser, when you add too much into the canvas this will slow down the browser
+if you use firebase if you undo then you grab instance from firebase when you press the button
+you can also use a variable - but if you refresh it will disappear
+
+
+schedule is flexible  - no stand up
+no lectures
+we wil do a check up on tuesday or wednesday - will see how much you've achieved
+we want you all to finish, so long as you finish an app with some functionalites it will be finger
+canvas can has animation, but its hard, it all depends on how you implement it
+animation would be on canvas draft
+
+upload via custom domain and surge
+deploy to the surge platform, more convinent than github pages!
+install surge using npm
+it will upload everything to the surge server
+you specify server name so you can goto a surge url to find it.
+
+or you can register a real domain you buy
+look into the documentation
+
+when youre finished then you deploy, when you want people to see it.
+
+
+
+

@@ -1,0 +1,165 @@
+NodeJS comes from Google chrome - 2009, write rewrote JavaScript to make V8, the fastest javascript engine
+Someone took the v8 engine then put it into a runtime engine to make nodejs
+
+JavaScript is new in comparision to Java and Python both older than 20 years old. 
+
+v8 / Nodejs designed to be light weight but now its used heavily to make applications
+
+NodeJs for the backend, browser can be seen as the frontend - jasmine is regarded as backend coding
+Chrome, firefox, IE all frontend - any javascript running in the browser is considered frontend JavaScript
+
+If you run in it terminal or ubuntu locally on your computer it is seen as backend code both should so the same thing demonstrate hello world (console.log()) in browser then in unbuntu --> both are running javascript, one is locally run while the other is in the browser
+
+What is confusing, you run nodeJS server from your local machine then you goto browser to view result.  Goto Localhost on browser during development everything on local machine.
+
+Deployment is different, NodeJS should run on a seperate server online which is the backend, cr eate and rent an instance on AWS so that you can host the website on a server and the browser locally is frontend.
+
+NPM node's package manager - helps you to install packages (external libraries) it handles the dependencies automatically, we dont need to intervene --> the JSON file is important, helps to keep track of every package that is needed for your applications
+
+Goto npm on browser
+Search for Jquery - you can install it using NPM not just CDN or download. show all the details on the right - version etc. 
+The documentation of how to include Jquery - its a standalone library
+9925 libraries are dependent on JQuery, if JQuery fails then there will be problems with all of the dependencies
+
+Jasmine  - how to install 
+
+
+Global Versus local installation
+If we want packages to be global on ubuntu / terminal we need to install using 'npm install -g jasmine' command
+
+Local installation - npm install jasmine
+
+Show how to install some package - use ubuntu to show them
+npm init - create a package.JSON file.
+first create a new folder then take them through the npm init - name, version, description, entry point (usually index.js) - which file should be opened when people use your package, test command: not needed (only for testing) git repo blank
+keywords = test / npm
+many different licences
+ show them the generated package file
+ then install jquery using npm
+ how them the new JSON
+
+ lockfile is generated so that the correct version of the module is downloaded for your application ^  means latest version is
+
+ --save-dev is saving the developer dependencies - devDependencies are only useful if you're testing the code, wont be needed for production enviroment
+
+ very simple method to create an application 
+ gitignore --> remember to ignore node_modules/
+ will not commit what is ignored to github --> this way you dont have useless files online
+
+ For every project you will need npm init
+ git ignore and the files you want to ignore
+
+ You shouldnt be able to download and install multiple copies of the same NPM in one project due to the JSON and JSON lockfile
+
+ Modules
+ simple files in a folder, in the CMS you can actually use a folder as a module which points to a file named index.js one way to do this.
+ Module.exports for functions that you want to be able to use in your app.js --> much like in jasmine
+
+ We must use require('./greet'); to get the method or any information from this file, PPT could be calling a file named greet.js or a folder called greet with a index.js within.
+
+You could have say 30 different js files for differnt functions, you would put them into a folder that has an index.js which points to each of the files within the folder, using the package require-dir https://www.npmjs.com/package/require-dir we are able to require the whole directory of files instead of requiring them one by one
+
+Three types of require -- node native module -- built into node -- native means made for node
+axios is an npm Module
+you can require your own modules to get functions you've made
+Remember module.exports
+
+show them example of lib.js 
+
+lib.js
+
+console.log('library file has been run'); - only run once if the function is called
+module.exports = "I'm a library.";
+
+index.js 
+
+var lib = require('./lib')
+console.log(lib);
+
+show in node ubuntu 
+
+you can export functions,class, number, objects, arrays anything.
+If you want to run the lines multiple times make it a function so that it is easily used / called multiple times
+
+Events
+('events') is a native module, go through code on the PPT
+Why are the events useful?
+
+Run node JS through windows such as ubuntu.
+
+ you can use ubuntu to require modules etc.
+ Server side events is like the example in the PPT
+
+ event.js
+ const EventEmitter = require('events');
+
+ class MyEventEmitter extends EventEmitter {}
+
+ let myEmitter = new MyEventEmitter();
+ myEmitter.on('call', (name)=>{
+     console.log(`${name} called me`);
+ });
+
+ module.exports = myEmitter
+
+ index.js
+
+ let myEmitter = require('./event');
+
+ myEmitter.emit("call", "Gordon");
+
+ use ubuntu to show how its basically the same as a function call, this is an asynchronous function all 
+
+ EventNodeJs google. look at online documentation
+
+Architecture of node helps to understand why need to set event emitters in this way.
+
+ubuntu
+> let lastName = require('./B');
+undefined
+> lastName.lastName('tucker');
+My last name is tucker.
+undefined
+>
+
+
+Weekly Assignments
+Do the assignment over the exercises, backend and react - you need whollistic understanding of the application, not just modular.
+
+Make a dropbox with cache - store using cache - used all the time, first time you load facebook, it takes a couple of seconds, when you click again it is almost instantaneous this is due to cache (locally storing information in the browser)
+
+Goto CMS then open dev tools and refresh, scroll to see if any files are served from cache - some files are loaded locally.
+
+Allow people to upload files to your application, serve them not from local storage but from cache not using FS to read.
+
+latency numbers every programmer should know. google and show them - 
+some parts of the laptop are fast, where as other parts can be slower
+L1 cache is the first layer in the computer
+L2 cache is the cache in CPU 
+all black stuff how fast CPU is nano seconds
+
+memory is blue, on average memory is 700 slower than CPU
+SSD still slower than memory
+hard disk slower
+
+show them how it was back in the day.
+
+we want to cache between memory and ssd 
+
+disadvantage of cache - if you turn off computer memory is gone.
+cache invalidation is hard to do it correctly if you cache alot.
+
+Go through requirements.
+Go through the PPT
+
+keep the txt file in the memory as a buffer so you do not need to read from local using FS every time. - Post then Get
+Read the file using promise
+AJAX used promise or JQuery version of it.
+
+
+With promise we ensure we get the full file from the local file to the server cache, otherwise we might end up with partial files this occurs when people similtaneously read and write.
+
+Topics needed Monday to Thursday
+
+Backend, no real gui 
+think about what you want to do before you start to code.

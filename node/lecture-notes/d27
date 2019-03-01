@@ -1,0 +1,99 @@
+slide 1
+The benefits of testing is automation, so you can easily find bugs
+each test case should contain logic for one particular unit (not dependent on eachother)
+Good testing implies good design --> as a documentation you should write documentation for specifications, but you can also use test cases to help other people understand how the application works
+
+If you upgrade your application your documentation might be old and not updated so then test cases could help people understand
+
+If you are dealing with many methods
+for example listnote, addnote, insert note - each mehtod should have its own unit test.
+
+slide 2
+good testing has unit tests as well as intergration tests, 
+Unit testing has as few dependencies as possible if you are testing your note service, you shouldnt include tests for express and vice versa. 
+If you test app.js (the entry point) - dont include noteservice tests. how do we not include the service? 
+We will look at this later.
+
+Do not try to test noteServices and userServices together, or a Router with a service, this wont work and will make it harder for you to find specific bugs test single components only.
+
+slide 3
+unit testing on bank and our bank teller - if we have a worker whatever happens to them they need to smile - line by line - show the flow of the diagram -> program flow of the bank --> each line
+Unit testing this teller is easy?!
+
+slide 4
+next slide - line by line through the code, in this case we are only concerned about the teller and not the bank branch.
+
+slide 5
+if the teller return anger then something is wrong in the serve() code but if you begin to add test cases which depend on one another or are mixed up then you will have cases failing and you wont know which method to fix.
+
+slide 6
+Maybe the proceedure is the issue - we cannot just test the teller, so we must ensure the whole flow of bank is working correctly 
+how can we ensure it works without also testing the teller? We need to test the withdraw and serve () methods without the teller so we can find the issue. 
+
+slide7
+So we when we do real tests we shouldnt ask a real teller to come but instead we should add a spy to replace the teller so that we are not driving real custromers away (you wouldnt want to mannually test everything in a bank on opening day) --> you neeed to make sure all your transactions will be going smoothly before you let a customer through the doors. 
+
+This is like an intergration test - so we are testing the procedure so we use spy --> the spy is owned by the bank, if we ask the spy to do somthing it will comply.
+
+Slide8
+Go through the code line by line
+first you initate a new instance of teller and the bank, - you call the bankbranch with the teller (as the teller is needed to operate the bank) set up the spies and so you can check to see if the methods are called in the correct order and with with the correct amounts 
+We run the proceedure to check if everything works we need to use spy so we do not test everything on the 'real' systems and real people.
+in this case we do not care if the teller is preforming properly, we only care the procedure of withdrawing money is correct.
+
+The bank is very over simplified
+
+slide9
+Here we need to test if the bank can handle if the customer has no money in thier account, we dont randomly select a real user to test this on, imagine if HSBC decided to do this to one of your accounts to make sure they had the right procedures in place. No of course not! That would be awful for the person and the bank
+Never test on the real production database/ real person.
+If you need to simulate this then we use 
+
+We dont need know why they have no money, we just need to say sorry to the customers, we need to ensure we can return a response for the user not having money, so we use the spy.
+
+slide 10
+now we use a similar procedure, yet we dont test the full idea like last time. Now we use the test with the spy to simulate if someone has run out of money. we use .throwError to emulate this so that we can test if the bank is following the correct method to handle this error, we are just checking if the bank apologies properly. 
+We simulate the error to ensure if it occurs in the real application we have the correct method 
+negative test cases are usually missed during manual testing, so it is good to write these cases during or before writing out your code --> if you do manual testing on your note taking application you wont write a test case to see if you can delete a note which doesnt exist. So automated tests if written and used correctly we should test every part of the code (and as it is automated this helps to save time when testing methods)
+
+Spy is advanced jasmine.
+
+slide11
+Weekly assignment revisited.
+The diagram shows the flow of the assignment
+noteServices - wont need any spies --> easiest to write test cases
+
+slide12
+the noteRouter might need spies as it is the middle component, need to see if app.post / app.get link correctly you should do negative test cases, maybe give users a maximum amount of notes each and throw an error if they exceed.
+So this is more like intergration tests, so we would use a spy to make sure things are called correctly etc
+spy on listnote run the test case of app.get and then you can see if the mehtod is called correctly, is it called once as it is meant to be?
+
+We probably dont need to test and spy on app.get and post this weekly assignment, but if we have another component that is depenedent on express then perhaps we will need to
+
+We only spy on the dependencies of the component we are testing. 
+
+Slide13
+
+We have some terminology for spies, we can use fake --> like calling a fake result to ensure your application is working correctly, Fake returns fake results (in a bank instead of return money you return no money, instead of add note, you can make the method return maximum note reached, if you want to remove, then you can throw no notes here...)
+fake the result
+
+mock is like the implementation of origonal components, in some sense fs is a dependencies of note services - if we want to remove this then we can use mock - so that fs is irrelevent to the actual tests (just incase you dont have space to install all your dependencies) -- 
+implement a whole component
+
+stub -- record if it was called or not? 
+see if it was called or not
+the differnt types of spies, when testing with differnt frameworks remember they might have different syntax and methods of implementations always refer to documentation to and materials 
+
+slide
+who should write test cases???
+as a good test case writer will try to break the program to ensure it is developed in the best way that it can be - see if the program can handle all these random test cases. 
+In normal manual testing you probably only test the first thing, but if you dont test the others then you wont know if these inputs might break your program, so you should test everything to make sure the users are unable to break the program. 
+
+So them the stack overflow articles and read through the unit testing articles
+writing test cases can be hard so dont worry if its hard - if you cant write good test cases sometimes you waste time. but the only way to get better is o practice. the normal practice is to write test cases, but some companies dont at all. 
+
+code along
+27 - example
+npm init
+jasmine init
+
+we will be doing around half of the assignment today.

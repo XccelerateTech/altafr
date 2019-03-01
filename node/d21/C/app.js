@@ -1,3 +1,3 @@
 const randomLetters = require('./numberToLetter');
 
-console.log(randomLetters(12));
+console.log(randomLetters(1));

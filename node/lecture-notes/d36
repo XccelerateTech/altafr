@@ -1,0 +1,191 @@
+Look at the material.
+
+install redis download it from the offical website, it should be a tar.gz, a common type of compressed file this is like a zip for linux.
+Here we should download the source code of redis.
+
+access the file via the command line, goto downloads and show them the redis download.
+you must use this command tar -xvf <redis-4.0.10.tar.gz>
+tar x means extract v means verbose f, is specific file and file name, then everything should extract.
+
+ls redis* 
+now cd into redis-4.0.10
+
+this is all the source code of redis, now you can code . in the folder
+
+redis is somthing we can install with apt.get
+but we want to you to be able to compile it yourselves. 
+apt-get is the newest download. But sometimes we dont want this as perhaps we dont want newer features (they may break previous code) so we teach how to get older versions.
+
+now in the folder
+run 'make' in the folder
+
+make is a common program that helps you to build your source code.
+now it should be unpacking redis. You can feel like super coders.
+
+if you want to build sophistocated libraries it might take up to 10 minutes to download. and sometime will cause error so you can try again.
+
+you can run open . to show the files in the finder
+.o is the output, so it has just been generated.
+after run sudo make install to install the whole program.
+When you now type in redis-server
+you can see it is running. 
+now in another terminal you should be able to run redis-cli and you should be in the redis console.
+
+This is how you install redis for ubuntu or make.
+
+you should be able to look at the CMS first you download the source code. then you extract the source code
+then go inside the directory
+then use make
+then sudo make install
+
+any issues should be solved by the troubleshooting commands. 
+
+when unpacking and installing source code you may run into issues, as alot of these installers might ahve dependencies that are not installed onto your local machine, so you may need to install tcl, make or build-essential to fully intergrate redis with your system
+
+when you run redis-server --daemonize -- will run it in the background, otherwise you will be running in the foreground and you willl have to use cntrl c to stop so you can type in the console.
+
+ps aux | grep redis.
+unless you are running in the production enviroment, don't daemonize, so for development just use redis-server so you can see what is happening.
+
+cms 
+most simple data structure is a key value pair.
+
+set location 'hong kong'
+get location
+
+setex location 5 'hong kong'
+
+get location (around 5 times.)
+will get until it is now null
+
+if you are using a cache that you only want availbile for 5 seconds you can do this.
+
+Like internet login for a  bank, the token would likely be set for 10 minute validity after this time you will need a new token to login. 
+You will not need to write the data structure yourself so we use redis.
+
+goto redis.io and look at the commands, you can see the data structures.
+
+keys are important.
+lists are important as well it will deal with arrays
+click list.
+LPUSH LPOP
+R PUSH RPOP
+RPOPLPUSH 
+
+this are all useful commands.
+
+Sets are similar to lists, it means there can be only one instance of this object in the list. 
+Imagine you want a list of the Student id's from the cohort to record this we will use set as I know the id's shouldnt be the same. 
+
+SortedSet has order, set does not.
+the results of mark six you might want to use sortedset. as people care about the ordering.
+
+KEYS LISTS SETS, SORTED SETS and HASHES
+
+hashes is like key value 
+hset instructor-sam equipment windows
+a hashes table to store the information about me
+
+hset instructor-sam edu history
+
+the command beloew should store everything we just stored.
+hgetall instructor-sam
+
+or we can just get fields 
+hashes are like objects in the redis server.
+
+You might not have any idea why you should use redis.
+If you need to store things in a proper data structure and you need it to be efficent etc, then we should use redis.
+
+look at the documentation of these afore mentioned items.
+
+Time complexity  - 
+
+google big o notation as well as show the CMS postgrad.
+
+big o notation is about complexity and efficentcy
+
+doubly linked list 
+
+why do we need such complicated things?
+certain data stuructures are more efficent in certain cases so depending on what you need to store you may need a specific type of data structure. 
+
+
+ for HGET, the time complexity is 0(1)
+ say you have a million data sets and objects to get anything it will take only 1 record, the time to run it should be fast.
+
+performance should not be affect by the number of records in the hashe. 
+
+ZRANGE (get something in a set) read time complexity
+if you want to read so many numbers, then the time it takes is a very long time to get this data.
+
+sortedset might have more features, however compare the data structures, if you want to add things without ordering then its O(1) - checking duplication will take a long time, but if we just use set it will very fast. 
+where as sorted set is 0(logN)
+
+look at wiki comparison computational complexity 
+
+so as the more data sets have more and more logs it will start to reduce the speed of the queries.
+
+datastructures
+will help you make a more efficent program when you begin to store thousands and millions of sets of data.
+
+PLEASE look at the documentation to see what is avalible to use. 
+
+HASHES, Key, set and sorted set.
+
+SN will take alot of time 
+
+If there are certain data structures that I might need to speed up my application I think of exactly what I need to store as well as how much I will need to store to define which dataset I need, then I will check the documentation to ensure that it should be fast etc.
+
+for redis the commands are quite set.
+
+in node JS we have the redis npm
+which allows us to set up a connection to the client like we did with postgres
+client.setex are the commands in the documentation so that when you call them each element after are the parameters
+
+these parameters are inline to what we put in before, 
+
+setex location 5 'hong kong'
+location para 1, 5 param, hk param 3
+
+If we are looking for something to return we add data into the function input. if not then we can skip it.
+
+the exercise is complicated.
+B is a little more easier.
+
+A is more difficult.
+How can we do this?
+Working in a development company where we mine blockchain. 
+If we need mining we need the hashe of the current transactions what havent been verified.
+We have an API for this. - unverified hashes.
+
+We want a program that will automatically grabs the hashes from this api. the information updatates every 10 minutes, store this info into server, after 10 minutes this information is not needed.
+
+We need you to use an API call with redis, to store the hashe of every transation in the block and nothing else. 
+
+We want the lastest block.
+All we want is the hash of each transaction in the latestblock. 
+it wont update very frequently.
+
+select one index, goto singletransaction page, copy the index in 
+
+now we have the info for this transaction. now we can grab the hash from the single transactions.
+
+what we need to do is download the transaction points and the cache this has and index point for 10 minutes. We want a cache system using redis to store these hashes for each transaction. 
+
+REDIS 
+in memory data store -  Remote Dictionary Server
+it stores in memory so it is very fast it will also be able to persist data which is very powerful!
+With this in mind using redis you are also able to store multiple data types.
+
+Written in C
+
+
+configure redis with password.
+set this in your configuration file. 
+search require password.
+
+
+to make two machines change the configuration file port to a differnt number
+also search for replicaof 
+one will be master one will be slave 

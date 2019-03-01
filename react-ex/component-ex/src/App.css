@@ -1,0 +1,11 @@
+li {list-style-type: none;}
+
+.card {
+  /* background-color: #000000; */
+  border-radius: 25%;
+  height: 350px;
+  padding-top: 15px;
+  margin-bottom: 40px;
+  /* color: #ffffff; */
+}
+

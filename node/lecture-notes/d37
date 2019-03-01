@@ -1,0 +1,306 @@
+solution for yesterdays exercise.
+
+
+
+blockchain, we have a chain of blocks, each block contains a leger of transactions which records the users who are sending money, the amount and the timestamps.
+
+miners keep mining for new blocks daily, these blocks are appended to the list of existing blocks forming a chain of blocks.
+But block esentially are mostly the ledger, every miner has a copy of this ledger, so there needs to be a consenous about who has a certain amount of currency we need a chain of blocks.
+https://anders.com/blockchain.blockchain.html
+
+a good visualisation of a block chain
+it is difficult to change the details in previous blocks, and it is extremerly time comsuming. 
+
+
+the number of transactions will be the number of transactions in the last 10 minutes.
+hash function
+fileformat.info/tool/hash
+will generate a hash from a simple string.
+SHA-256 is what most blockchain use.
+converts the string into binary representation then it converts it, so if you hash ABC over and over the output will be the same.
+It is chaotic, with a different output you shouldnt be able to find the input.
+now hash abcd, to show you cannot predict the output from the input. the single character change makes it a completely different hash. making it very hard to find the input string from the output. 
+A has is deterministic, if you put in ABC the sha 256 will be the same output.
+
+
+when we goto blockchain.info/latestblock 
+we get a hash of the latest block and we can see a list of transactions (maybe a few hudred transaction)
+
+for each transaction we want to make a new request every time. We need ot get the hash value of all of these indecies by sending another request
+We just need the hash
+
+first call is to api / latest block for the full list of indecies 
+for each indecies we need to make another api call with the index.
+After we get the hash from the second call we need to store this in redis.
+
+We have async library - this is not like async and await in promises. 
+Here we use async.queue, we are not using the async key word.
+Look at the library.
+make a point to change the word to asynch library. 
+https://github.com/caolan/async/blob/v1.5.2/README.md
+then search for queue.
+
+queue is a function that takes a worker and concurrency
+What is a worker?
+It is actually just a function that takes an argument and callback.
+In our example the work the worker preforms is an api call to blockchain.info/rawtx/ + txindex.
+This is axios.get, so its an asynchronous method - uses promise syntax so we can use .then
+yesterday we might remember client.setex - we are setting a key& value with an expirary time.
+
+It only update every 10 minutes, so we dont need to store for longer than 10 minutes, it will be a new block every 10 minutes so that is alot of data if you keep it all.
+we call the callback when it is done, it is from the worker function.
+queue allows you to push multiple inputs into the queue. It will have a queue of asychrnous functions, it will not send all the calls at the same time.
+the number at the end refers to the number of workers that can work concurrently.
+
+make the number larger and it will be fast but consume more ram.
+if we had three calls, and we are set at two, we must wait for one of the calls to finish before we are able to call the final request in the queue.
+
+If we do this all at once, we me have 2000 calls or more. If we do this, it will probably cause an issue for your workload - also their server may ban us.
+
+read latest block is a axios request to the latest block route.
+after we get all transaction indecies we push these indexes into the queue.
+We also check to see if the index exsists or not, if it does, we do not push, if it doesnt then we will push and set the expire values to 10 minutes. 
+
+app.get from express, this allows you to see the actual website.
+so goto localhost:port/latestblock
+
+If we have not fetched all of the transaction  and we make a request, we might actually cause a rejection 
+which is the rejection handler in our code in app.get
+
+once it is finished we should be able to see all the hashes in localhost:port/latestblock.
+
+
+CMS image - 
+HTTP protocol, a get request, one response. same for all requests, as this is the protocol.
+Look at SSE server side event protocol? we have one single request, but then we are able to send back multiple things, all are initiated by the client, not by the server.
+
+With websocket protocol, the server is able to send the client any request at any time and the client can do the same.
+
+We need websockets for any realtime update, multiplayer games will require this.
+But we need to set it up.
+
+mkdir demo
+cd demo
+npm init -y
+
+npm install express
+npm install socket.io
+ 
+touch index.js 
+
+code .
+
+Now we can copy the CMS
+server.js (in our index)
+
+const express= require('express');
+const app= express();
+const http= require('http').Server(app);
+const io= require('socket.io')(http);
+
+app.get('/', (req,res)=>{
+    res.sendFile(__dirname + '/index.html');
+});
+
+io.on('connection', (socket)=>{
+    console.log('A user has connected to the server.')
+})
+
+http.listen(3030);
+
+in index.html
+copy from the cms
+
+now we can run this in node.
+now we can goto localhost 3030
+We can now see a basic looking chatroom
+if we send a message, we can look at WS in network - we can actually see a request, its not like usual HTTP requests. 
+
+ws is because we are trying to connect to the server with WS protocol.
+
+
+The front end.
+To be able to use socket.io
+we must use a CND to get the script of socket.io
+we then need to invoke var socket = io();
+
+If we look at the terminal we should see a user connecting as we refresh.
+
+express is another framework which working over HTTP.
+now we can do app.get
+app.listen etc.
+
+Why do we use HTTP? our socket.io uses HTTP so we should use it.
+.Server(app) = so we know it is still an express app.
+when we require (socket.io)(http);
+
+we must to http.listen to allow both libraries to be able to listen to the same port.
+
+now in index.js we add/change some code.
+same in the script of our index.html
+
+io.on('connection', (socket) => {
+    console.log('a user connected to the socket');
+    socket.on('disconnect', () => console.log('a user left us'));
+  socket.on('chat message', function(msg){
+    console.log('message: ' + msg);
+  });
+});
+
+before http.listen
+
+<script>
+  $(function () {
+    var socket = io();
+    $('form').submit(function(){
+      socket.emit('chat message', $('#m').val());
+      $('#m').val('');
+      return false;
+    });
+    socket.on('chat message', function(msg){
+      $('#messages').append($('<li>').text(msg));
+    });
+  });
+</script>
+
+in our index.js
+ io.on('connection')
+server side we should notice a user has just logged on.
+now the event listener should be activated.
+
+in the client side, after the connection is made, whenver we use submit in the form it will emit an event called chatmessage with the value of the text box, to the server.
+socket.emit- sending the message and event to the server.
+
+we should be able to demo it.
+
+hello world should be send in the server, also on the front end 
+
+io.emit is also able to send a request back to the client this is from our server, it has recieved a msg from the client and now it sends it back.
+the client side can deal with this using socket.on('chat message') it will append the data to the dom.
+
+
+this emit in our index.html it wont directly fire off the other event listener. as it is sending the request to the server, on the server side we have io.on ('chat message') which will fire off the io.emit('chat message') which will be recived by the clients socket.on('chat message')
+
+IF IT DID it would be a recursive call and an infinite loop.
+
+if you emit from the server, it only goes to the client. and vice versa
+
+now we should be able to do this for multiple people, I can now see the messages in both sides as both clients are connected to our web socket.
+
+in ubuntu type ifconfig | grep inet
+find the inet ip 10.0.17.38 - check the port of the application
+append the port to the ip
+eg 127.0.0.1:8080
+
+other people from other computers should be able to join. provided you're on the same wireless network.
+
+client and serverside has event handlers npm
+so when you emit you are should be handling on both
+
+NAMESPACES
+if you are building your chatroom app, you might not want all the users to see everything from everyone. maybe we seperate them into groups
+10 users in group A and 10 in group B
+Namespace is when you assign different users to the same name space.
+
+change some code to use the name space.
+io.on in index.js
+
+here we have io.of before .on
+the same below.
+
+io.of('/namespace1').on('connection', (socket)=>{
+    console.log('a user connected to the server');
+    socket.on('disconnect', ()=> console.log('a user has left us'));
+    socket.on('chatmessage'), function(msg){
+        console.log('message: ' + msg);
+        io.of('/namespace1').emit('chatmessage', msg);
+    };
+});
+
+so we need to specify which name space we are emitting things to.
+
+
+
+similary the script on our client side is the same.
+
+as well as whole function in our index.js
+
+$(function() {
+    var socket = io ('/namespace1');
+    $('form').submit(function(){
+        socket.emit('chatmessage', $('#m').val());
+        $('#m').val();
+        return false;
+    });
+    socket.on('chatmessage', function(msg){
+        $('#messages').append($('<li>').text(msg));
+    });
+});
+
+if we restart the server and refresh both pages.
+we should be able to see both clients. As we are connected to the same name space.
+
+the idea of Namespace is the assign users to different groups.
+
+But this might not be practical.
+we will now need to implement rooms.
+if you want to have people subscribes so people may talk to multiple people then we will need separate rooms.
+
+so we need to change the code again.
+index.js replace.
+
+io.on('connection', (socket)=>{
+    socket.on('disconnect', ()=> console.log('a user has left us'));
+
+    let chatroom = null
+    socket.on('subscribe', (room)=>{
+        chatroom = room;
+        socket.join(room);
+        console.log('a user has connected to the room ' +room );
+    })
+
+    socket.on('chatmessage'), function(msg){
+        console.log('message: ' + msg);
+        io.to(chatroom).emit('chatmessage', msg);
+    };
+});
+
+.on connetion we know
+the only real differnence is that we now have a subscribe event handler.
+This is triggered from our client side.
+when the client will press to join a room.
+
+client side code
+
+$(function() {
+    var socket = io ();
+    $('form').submit(function(){
+        socket.emit('chatmessage', $('#m').val());
+        $('#m').val();
+        return false;
+    });
+    socket.on('chatmessage', function(msg){
+        $('#messages').append($('<li>').text(msg));
+    });
+    $('button#join').click(e=>{
+        e.preventDefault();
+        let room = prompt('which room do you want to join?');
+        socket.emit('subscribe', room);
+    })
+});
+
+also in index.html below the <ul of messages>
+add
+<button id='join'>Join Room</button>
+
+
+we should restart server and begin to restart the pages too.
+Now we should have a join room button, now that we click it a prompt should appear.
+now we can name the room we a joining. Now we can type into this room.
+when we press join room, a user can join a room this is handles in index.js
+we should be able to see all the code.
+
+If we want to implement message persistance then we will need a database to store our information using redis.
+We should be able to do this. after today.
+weekly assignment
+socail login we learn wednesday

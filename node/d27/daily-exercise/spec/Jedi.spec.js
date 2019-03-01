@@ -8,7 +8,7 @@ describe('Jedi functions testing', () => {
     
     beforeEach(() => {
         newJedi = new Jedi("newJedi", 100, 2000);
-        newSith = new Sith("newSith", 200, 1000)
+        newSith = new Sith("newSith", 200, 1000);
     })
 
     it('should have a correct name', () => {

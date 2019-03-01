@@ -1,0 +1,298 @@
+Jest & Enzyme
+
+jasmine is mainly for backend testing, you can add it into the browser but it is difficult.
+You may also use Webdriver.
+
+
+Jest is very similar to jasmine, the syntax is very similar.
+To test react, we need enzyme, enzyme allows us to test front end, tests rendering in React 
+In React to render your page you rely on the virtual Dom, everything you see is drivived from the virtual dom. 
+So we dont need the browser to run the tests, we just need javascript to construct the virtual dom so we can check and test it, so we use jest with some helper functions to track and test the virtual dom. Enzyme is designed specifically to test react, it will help to render the virtual dom enviroment 
+
+to write our tests, we use setupTest.ts
+copy and paste create
+App.test.tsx
+copy and paste 
+
+shallow method, it like the virtual dom, it is the renderer.
+
+The best way to test something is the unit test, which is the easiest.
+you can test all at once 
+or you can unit test.
+
+if you want to test the smallest component import the component inside and give it the props then you can test it 
+
+expect(wrapper.find('table tbody tr').length).toEqual(1); ==> this is a css selector to grab the elements in the virtual dom and apply javascript to it to test what should be rendered 
+
+When you start to build bigger and bigger projects and you are passing multiple props to a component, how are you going to know if everything is rendered properly. You can use the test cases to ensure things are being rendered into the virtual dom. Use test cases and give the components the props and then use a css selector to grab the rendered information then using expect check the length (the amount) of each <tr>. This is how you can test to see if the react application will render the correct information in the right way. 
+
+test cases in react are a little bit easier to write than node js, as you know how your virtual dom is going to be constructed, and you are passing the props to the components so you should be able to easily construct tests to see what is being rendered. 
+
+In our TicTacToe example we have a lot of material and so we should be able to test is quite effiectively. 
+To test the state you have to grab the wrapper.instance of an element so you can evaluate the current state and preform a test. 
+
+If you want to test with mock you can, all you have to do is set up a variable which calls the function (onClick) then use mock to call it and then test to see if the function has been called. 
+
+shallow is the best for unit test as it only renders one layer if i test linkedlist from the weekly assignment, it wont render the child elements of a component. 
+
+so use shallow for testing each layer of your application 
+
+for intergration tests where you are testing more sopistcated framework, instead of just constructing the virtual dom, it also renders a semi-browser like enrivoment, which is called mount.
+
+If you use the mount you are able to simulate everything you could with shallow, but in this case you can go one layer down (to a child component and test the button (click it.)) 
+
+you can also test your redux store, to test your store is quite simple.
+
+import the store
+
+import store from './store
+
+describe('Redux Store', () => {
+    it('Initial State should be empty with just empty team array', () =>{
+        expect(store.getState).toEqual({
+            team: {
+                teams: []
+        });
+    });
+    it('the team array should have one team after adding a team', () =>{
+        store.dispatch(addTeam(1, 'Accelerate', 'Red', []))
+        expect(store.getState).toEqual({
+            team: {
+                teams: [
+                    {
+                        color: 'Red',
+                        id: 1,
+                        name: 'Accelerate',
+                        players: []
+
+                }
+                ]
+        });
+    });
+});
+
+you could even add more teams. 
+
+remember you want to store without dependency. to do this in store"
+
+export const createReduxStore = () => {
+    return createStore(combineReducers({
+        team: teamReducer
+    }))
+}
+
+in app.tsx
+
+import { createReduxStore } from 'src/redux/store';
+
+const store = createReduxStore()
+(taking out dependency, making a new store every instance)
+
+
+then in the test cases...
+
+import { createReduxStore } from './store
+
+describe('Redux Store', () => {
+    it('Initial State should be empty with just empty team array', () =>{
+        const store = createReduxStore()
+        expect(store.getState).toEqual({
+            team: {
+                teams: []
+        });
+    });
+    it('the team array should have one team after adding a team', () =>{
+                const store = createReduxStore()
+        store.dispatch(addTeam(1, 'Accelerate', 'Red', []))
+        expect(store.getState).toEqual({
+            team: {
+                teams: [
+                    {
+                        color: 'Red',
+                        id: 1,
+                        name: 'Accelerate',
+                        players: []
+
+                }
+                ]
+        });
+    });
+});
+
+Now you can test your reducer. 
+IF you have written your own actions and reducers then testing should be easy. 
+
+it('the team array should be empty after clearing', () =>{
+                const store = createReduxStore()
+        store.dispatch(addTeam(1, 'Accelerate', 'Red', []))
+        store.dispatch(clearTeam())
+        expect(store.getState).toEqual({
+            team: {
+                teams: []
+        });
+    });
+
+    If you do these types of tests you can claim that you can write test cases. 
+
+You do not need to test redux thunk here. 
+We could use mock the axios call and response. 
+Thunk actions by themselves do not change the store state, the only part the affects the store are the actions in action.ts 
+
+If you are testing the api, that is usually backend coding or a communication error between back and frontend. 
+
+==============================================================================================================================================
+==============================================================================================================================================
+
+Webpack:
+Whenever you are typing:
+
+yarn start
+yarn build
+yarn test
+
+or
+
+npm start
+npm build
+npm test
+
+it is actually react-scripts running longer code that can be found in the package.json of your project. 
+
+react-scripts is a collection of tools that react-script reccommends to help build your application, one restriction is that you cannot customise or build your own build enviroment. The only part you can tweak is the https or http. If you really want to use customisation then you cannot use it here. 
+
+We can eject, which is a permenant action. remmeber to commit otherwise you lose alot of files while adding even more. 
+
+create-react-app hides al the extra dependancies that are been added.
+most of these dependancies are here to convert or help read. 
+Webpack is different - it is a tool that collectivly handles all of these modules (from the cms) and preprocesses them before they are handed over to the browser. 
+webpack converts all of these things into four types of files. 
+
+If you do not want to use react-create-app and you want to develop and create your own configuration then you can. the CMS has the instructions. 
+
+first you would define the entry file
+then you define the modules - by looking at the extension of the file, use a special component to process it. 
+webpack matches extensions to components to output code that is readable by the browser. 
+
+test: /\.tsx?$/,
+
+regular expression, the file is either ts, or tsx, only registers if it is at the end of the filename 
+
+resolve, all these files are processed
+
+output: eventually put all processed files into bundle.js
+to the destination folder of the file. 
+
+if you yarn eject you can see all that webpack is doing 
+in webpack.config.dev.js you can see over 300 lines of code that you would have had to write by yourself, if not for webpack. 
+
+After an eject things should work exactly the same. 
+
+SASS
+It is an ecnhancement to CSS, it has alot of good things:
+
+example of old css
+
+.header {
+    background: #fff;
+}
+
+.header nav {
+...
+}
+
+.header nav ul {
+...
+}
+
+.header nav ul li {
+...
+}
+
+@media screen and (max-width:1024px) {
+    .header {
+    background: #fff;
+}
+
+.header nav {
+...
+}
+
+.header nav ul {
+...
+}
+
+.header nav ul li {
+...
+}
+}
+
+with SASS
+
+you can do something like this:
+
+you can also create colour variables
+will work for padding and text height 
+
+.header {
+    background: #fff;
+    height: 200px
+
+
+nav {
+    ul {
+        li {
+            ...
+        }
+    }
+}
+
+@media screen and (max-width:480px) {
+    background: #fff;
+    height: 480px
+}
+
+
+}
+
+or something like above.
+
+If you want to use SASS you must eject, you cannot use it without ejecting. 
+
+then follow the cms:
+
+inside webpackconfig.dev.js & webpack.config.prod.js 
+
+test: /\.s?css$/, // This matches .scss or .css (near the top over the test: /\.css$/)
+
+add the loader
+
+{
+               loader: "sass-loader" // compiles Sass or Scss to CSS
+            }
+
+then you sohuld be able to change the css files to scss
+
+we can change it to the better style of scss now, different to css. 
+
+You can also create variable colors in scss
+
+$foreground-color: #222;
+$background-color: #fff;
+
+
+.App {
+    header {
+        background-color: $background-color;
+        color: $foreground-color;
+    }
+
+    a {
+        color: $foreground-color;
+    }
+
+    &:hover {
+        color: lighten($foreground-color, 40)
+    }
+}
+
+this is not css. it will help you to calculate the correct amount. 

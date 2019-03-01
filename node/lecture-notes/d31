@@ -1,0 +1,97 @@
+Weekly assignment 03
+
+We have already set up an application that can take notes and save users, but so far we have just been writing into a json file and not a database. This week we will focus on databases, we shall be using PostgreSQL and later on knex to query it. 
+
+Databases are used in the real world, note json files to store all the data. 
+So by the end of this week we will be intergrating the PostgreSQL database into our notetaking application 
+
+We teach PostgreSQL - there are no sqls, which have a different structure than we will be using this week. We also teach NoSQL in this course in the next week, we will introduce Redis which has a different data structure than PostgreSQL.
+
+PostgreSQL is one implemnetation of SQL, you might have heard of mySQL, another way that SQL databases are implemented. SQL is the language, the implemnetation is how you use it and query it.
+
+Please install PostgreSQL servers on the machine
+for mac
+https://postgresapp.com/
+
+and download the application
+
+if you are using windows and linux use the CMS, install it via ubuntu or powershell using the commands in the CMS sudo apt....
+
+Mac users have the advantage of having a GUI so you can see all the different databases associated to your PostgreSQL application, while windows users will only have the commandline. 
+
+
+you can download pg admin if you want a bit more of a ui 
+https://www.pgadmin.org/download/
+
+For those who have installed PostgreSQL you can start running your database server, as I said mac users have a gui and can see the databases so they can start there server that way, windows users on the other hand set it up in a different fashion via the command line. 
+
+to start pg Admin all you need to do is click on the icon that is on your homebar or find the application in finder. 
+PGadmin automatically opens into the browser! dont worry!
+
+PostgreSQL is our database server, we are currently running it off our local machine and this is only for development, when we launch our applications we will have our database on another server. 
+PGadmin is the client to our server. So in development we have the client and the server on the same machine. 
+
+Create a server
+
+to connect to a server the maintenance name must be the same as the be the same 
+then you are connected to your database
+
+windows use the command line for everything
+
+you are able to have multiple databases on your sever
+you should have three by default
+
+in pgadmin, on the client side you can connect to the database and also see properties .
+you can have multiple users connected toa single database
+
+when you are in PSQL form you can use psql comandts
+such as \list
+you can use \dt to list all the tables in the database
+
+Show them how to make a new database
+for mac users they can see new ones in thier PostgreSQL client (everyone should be able to see it in pg admin)
+
+show them how to create a table
+CREATE TABLE ftse2018
+with some columns
+
+connect via pgadmin
+gneeral name doesnt matter
+connection
+localhost
+the name needs the be the same as the maintenance database - ftse2018
+
+then the pgadmin should be connected to the server
+
+if you then use \list you should be able to see the new database.
+try get everyone to be able to see new database and the new table they
+
+then go through the CMS
+connect pgadmin to the server
+
+go through the creating tables section
+tell them what column name is then the descriptions of each row.
+Serial will be incrementing
+varchar is characters
+integer would be numbers etc.
+not null means you need to have it
+
+do these commands in your postgres client, for mac users its the terminal that opens when you click in the postgresql client.. 
+for windows users you must start this psql access in your ubuntu. in linux or powershell whereever you ran the commands before.
+
+show them the creation of the table
+show them inserting data into the table and list out the table
+
+you can also see the client tell you that you insrted.
+
+you can use the command SELECT * FROM citrus, which will show everything you have just intserted into the table
+tell them that the order of the colums must correspond to the values that you pass through.
+name colour and taste will be lemon yellow and sour
+
+show them update and delete
+show them by changing a color or taste
+show them how to use the where conditions that are more complicated and better
+
+now talk through what they need to do for the exercises.
+
+show them the best documentation. 

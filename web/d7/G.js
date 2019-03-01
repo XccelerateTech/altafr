@@ -61,6 +61,8 @@ class FlyingAnimal {
   bat.fly();
   bat.feed();
   
+  console.log(bat.fly(), bat.feed())
+
   var bird = new Bird();
   bird.fly();
   bird.reproduce();
@@ -81,8 +83,7 @@ class FlyingAnimal {
   Whale : A Whale can swim and feed milk
   Bird : A Bird can fly and lay eggs
   
-  */
-
+ 
  console.log(bat.constructor.name);  
 
  console.log(fish.constructor.name);  
@@ -90,4 +91,5 @@ class FlyingAnimal {
  console.log(whale.constructor.name);  
  
  console.log(bird.constructor.name);
-  
+
+   */

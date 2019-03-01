@@ -1,0 +1,206 @@
+maybe go over exercise D from yesterday
+We need to read from a CSV file, we need to read the processes in the file and turn them into SQL commands and then update our database accordingly.
+We will need PG, with the configuration set up.
+We will also need csv-reader as well as fs
+
+We need to configure pg in the correct manner, following this we will need to create an inputstream or rather, fs.createReadStream from our csv file.
+
+We are using async and await syntax, so actually we are returning a promise. Whenever we have async we will always return a promise, to use await you must declare the function as async every time.
+We first read our file, using the inputstream, pipe and CSV-readablestream
+on data (so on input for each row) we will push the row into the empty rows array.
+on end we can begin the transaction (after the file has fully been read) we are able to start our transaction.
+Inside a try catch block
+First we BEGIN to begin the transaction, end with COMMIT or if an error occurs we roll back
+use a for loop to iterate over the array, so that each row is defined as action, name and quantity - buy lemon 20
+Then we have the logic for each of the actions, BUY, SELL and update
+SELL - first we check to see if we have enough stock to see our amount 
+then we can sell once we have found out if we have the correct amount. Otherwise we end a new error and we rollback to ensure we can revert any changes we have made. 
+$1 and $2 represent the positions in which we will pass our two variables in the array respectively. 
+BUY - we do not need to check the amount in the stock, you just execute the command. 
+
+We have await, as we are using promises here, we need to ensure each client.query is finished prior to moving onto the next action. This is important as especially in the case of SELLING we need to wait to see if we have enough stock before selling. AWAIT is similar to a callback function, once this action is complete we can continue to new actions. 
+
+Show them how the program runs. show them before and after stock tables. 
+Because we are using await prior to the client.query we are returned a promise, the promise will resolve with the completed action of the SQL command, in the case of the first action of selling we can see that we are selecting from the stock table to see if we have enough fruit to fulfill the transaction. 
+Result would be an object, which have the rows keys, which is basically the same as what we see in our postgreSQL you see in terminal or ubunutu rows reflect the result of the query
+console.log(result)
+console.log(result.rows)
+
+show them how to error out. Keep displaying updated results
+
+=====================================================
+
+Go through knex on cms - show them the three ways to select a table using knex, they all do the same thing.
+
+Where methods
+when we have an operator we pass this as the second parameter (also in quotations), if its an equals sign, you will not need to put the operator in as this is the default action, checking for equality.
+
+Like is similar to regular expression, postgres like command - tutorialspoint.com
+we have two operators with like % and _
+
+% any characters of any length
+_ one character 
+
+eg 200% - it will match everuthing that starts with 200
+if you have _ it will match one character 
+go through a couple of the examples.
+
+After a bit go back to the CMS and go through more of the knex examples, we will introduce the idea of a nested query - there will be an array of results from SELECT id FROM table2 = where the WHERE condition is fulfilled.
+
+postgres tutorial on GroupBy
+joins
+
+The order of the SQL queries is important, first you SELECT the table columns you want, then you define the able you want, then you put your conditions after the WHERE. If you use a groupBy clause then you will have it after the where, and finally if your query has ORDERBY then that is last.
+If you do not have the right order it will not work.
+Follow the documentations order!
+
+Join methods in knex, CMS - SELECT FROM INNERJOIN then WHERE 
+In knex you can do an innerjoin and on, as a callback function, you have the condition, id From table2 must not be null, otherwise it will not show up in our joined table. 
+Then we have our where!
+innerJoin doesnt include any null row, so CMS should be changed  - test students.
+
+The SQL following these knex commands is what it outputs. 
+
+groupBy ORDERBY
+orderby essentially means before listing the results, we sort it by a particular column, if its a string, it will be alphabetically, if its a number then it will be incremneting unless stated otherwise.
+
+INSERT is similar to plain query commands, can insert multiple objects at the same time, by using a comma, column then has a corresponding value. 
+
+returning allows us to return a certain column, in the cms we will return the id of everything that we insert, if we dont need a returned value this code is not needed!
+
+batch insert, which is similar to inserting multiple object. in terms of performance it is different, it will have better preformance 
+
+KNEX has similar syntax to SQL for updating an deleting. For transaction the command is slightly differnt to SQL. 
+
+difference between Query builders and ORM - does not 
+SQL has selectors where clauses ect
+
+Now we explain migrations with a codealong.
+it allow us to have basic versioning of our database. 
+normally when writing code we use github to track our code, our database though is not tracked by this. So we have migrations which allow us to track the tables.
+If you need to update your tables, we wont have an updated git. So we need to use migrations.
+
+set up knex migration before class. 
+
+npm install knex -g (global installation) - use it as a command line tool
+npm init 
+npm install knex (must do it locally) - i neeed it in the package. in my project.
+knex init, this is possible as we installed it globally.
+
+code . 
+show them knex is now in our package.json
+npm install pg
+
+knex init will create a knex file change client to postgres
+
+in knexfile.json
+module.exports = {
+    development: {
+        client: 'postgres',
+        connection: {
+            database: 'my_db', - rename to knex after making the new database.
+            user: 'postgres',
+            password: 'postgres' - mac users will be blank
+        }
+    },
+    staging....
+}
+
+create database knex;
+\c into knex
+
+in a new ubuntu inside the directory
+knex migrate: make initial
+this should make a new file in the migrations folder, which is essentially empty
+
+this is basically what we see in the cms - show them 
+we can now copy the migration file from the cms.
+
+in the inital.js migration file:
+
+exports.up = function (knex, Promise){
+    return knex.schema.createTable('users', (table)=>{
+        table.increments();
+        table.string('name');
+        table.string('email);
+        table.timestamps(false, true);
+    });
+}
+
+exports.down = function (knex, Promise){
+    return knex.schema.dropTable('users');
+}
+
+this is essentially telling knex what this version of migration will have what tables will be generated. To create this new migration we want to specify what changes we are making. From the empty migration we are now generating a table with name, email and timestamps.
+
+So the migration file allows us to define what changes we need to make.
+and then exports.down tell knex what changes we need to make from this stage to the previous stage. 
+after you specify your file.
+
+do knex migrate: currentVersion we actually dont have any tables aside from the ones that knex makes for us. 
+show them using \dt 
+
+in our initial migration file we know what we are changing from empty to initial stage. 
+
+knex migrate:latest
+it will run the exports.up
+
+now show them the database using \dt to list the new table that has been generated. \d <table_name> you can see the columns in the table that has been generated. 
+
+if we want to go back to previous versions.
+we can run knex migrate:rollback
+if we run this, our table should not exist in our database anymore. 
+
+migrate back to latest version.
+knex migrate:currentVersion
+
+We want to use knex migrations to keep track of any changes to our database. 
+if we need to add another column or table we should use migrations to do this, git will not keep track so we use migrations.
+
+You will need to specify a new migration each time. 
+
+create another migration file.
+knex migrate: make first_migration
+
+now a new file should be made, so now I can define new tables - i can specify any new changes that I need. 
+change the name of the tables etc.
+
+exports.up = function (knex, Promise){
+    return knex.schema.createTable('table1', (table)=>{
+        table.increments();
+        table.string('name');
+        table.string('email);
+        table.timestamps(false, true);
+    });
+}
+
+exports.down = function (knex, Promise){
+    return knex.schema.dropTable('table1');
+}
+
+now we can use the command 
+knex migrate:latest 
+
+the numbers match the migrations files. 
+structure of the table is effected by migrations, insert update and select doesnt affect the development phase. 
+
+if you want to populate your table when the code runs when the migration is done.
+If we dont want to type it out every time we need to make seed files.
+
+seeding is when we want to populate our new database with some new values - CMS has an example of our seeding function
+
+run knex seed:make inital-user
+this will make te seed file.
+
+exports.seed = function(knex, Promise){
+    return knex('table_name').del() -- this del() will delete the data the seed file doesnt do it.
+    .then(function(){
+        return knex('table_name').insert([
+            {colName: 'rowValue1},
+            {colName: 'rowValue2},
+            {colName: 'rowValue3},           
+        ]);
+    });
+};
+
+if you pull a project from github, you will run knew to migrate to the latest version, then you can use knex seed: run

@@ -9,6 +9,9 @@ function informMe (endpoint, value){
  }).done(function(data){
      console.log('This function will run if the AJAX has worked')
      console.log(data)
+     let stringifiedData = JSON.stringify(data)
+     let infoPoint = document.getElementById("information")
+     infoPoint.innerHTML = stringifiedData
  }).fail(function(data){
      console.log('This message will run if the AJAX has failed')
  }).always(function(data){
@@ -17,8 +20,8 @@ function informMe (endpoint, value){
 });  
  }
 
-console.log('Europe Info');
-informMe('region', 'europe')
+// console.log('Europe Info');
+// informMe('region', 'europe')
 
 console.log('French Info');
 informMe('capital', 'Paris');

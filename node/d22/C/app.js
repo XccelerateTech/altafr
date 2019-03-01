@@ -4,7 +4,9 @@ var fs = require('fs');
 
 //this code will only show the index.html - not including css, pictures.    
 
-/*http.createServer(function(req, res){
+
+/*
+http.createServer(function(req, res){
     
     if(req.url === '/'){
         res.writeHead(200, {'Content-Type': 'text/html'})
@@ -14,13 +16,15 @@ var fs = require('fs');
         res.end()
     }
 }).listen(8080, '127.0.0.1')
+
+// this will load the basic html structure of the index.html page, all images will not be served however.
 */
 
 
 /*
-
 //the conditional statements must follow the path from the index.html
 //Where as the when you create ReadStream it is the full path.
+
 http.createServer(function (req, res) {
     if (req.url === '/') {
         fs.createReadStream(__dirname + '/flowershop/index.html').pipe(res);
@@ -47,26 +51,21 @@ http.createServer(function (req, res) {
         res.writeHead(404);
         res.end();
     }
+}).listen(8080, '127.0.0.1')
+
+
 */
-
-
-
-
 //this code will render the whole flower shop
 
+// var path = require('path');
 
-var path = require('path');
+// http.createServer(function(req,res){
+//     let filePath = req.url == '/' ? "index.html" : req.url;
 
+//     res.writeHead(200);
 
-http.createServer(function(req,res){
-    let filePath = req.url == '/' ? "index.html" : req.url;
+//     fs.createReadStream(path.join(__dirname, 'flowershop', filePath)).pipe(res);
 
-    res.writeHead(200);
-
-    fs.createReadStream(path.join(__dirname, 'flowershop', filePath)).pipe(res);
-
-    
-
-}).listen(8080, '127.0.0.1')
+// }).listen(8080, '127.0.0.1')
 
 

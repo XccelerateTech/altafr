@@ -1,0 +1,126 @@
+NPM ~ tilde vs ^ caret
+npm uses the tilde and caret to designate which patch and minor versions to use respectively
+show them online website. https://michaelsoolee.com/npm-package-tilde-caret/
+npm system - 1.0.2 - major.minor.patch 
+usually when developing applications you need to ensure your dependencies remain the same so that the application is not effected by the software it is used "So if you see ~1.0.2 it means to install version 1.0.2 or the latest patch version such as 1.0.4. If you see ^1.0.2 it means to install version 1.0.2 or the latest minor or patch version such as 1.1.0."
+
+every application has a package.JSON
+
+npm init to set up the JSON file which tracks your dependencies and the JSON lockfile, which tracks which version of the dependency to use
+
+different types of NPM installation
+-g global packages - shared by all projects in your local machine
+npm install - will install all latest required package for an application or the most acceptable versions
+which nodemon in ubuntu
+ls -l nodemon 
+cd /usr/lib/node_modules    
+
+without -g it will lave locally -- there is a large difference between global installation and local directory installation
+You cannot install everything globally to share will all files/folders
+
+packages may be upgraded and so if you install everything globally, it is harder to maintain if your apps share similar libraries and packages, then its hard to update multiple apps as each app may use a different version.
+
+Express
+We have already used HTTP server, its slightly annoying to use though, express helps develops to make modern web applications 
+gap is the internet, between your local machine and the server.
+
+Express middleware, functions that sit inbetween your request and route handlers to preprocesses your request before the route handler does it thing (servers the correct page etc)
+request comes, goes into the middleware, then you have route handler actions, then you render an html file to client or JSON file.
+
+clear architecture is next slide
+technically route handlers are just middle ware
+from right to left through different processes in an assembly line which spits out either data or a page.
+
+install express into a new directory - create a projects
+show them express in node_modules
+create a small project - look at lecture examples.
+explain how the code works - the URL string is very important to tell them - show them an example using another request.
+Tell them to use nodemon. 
+But we are just printing text, so we need to make an application that accepts input on the client side.
+
+nodemon refreshes the server every save 
+Show the slides
+
+app.get() - get data from req.query
+app.post() - get data from req.body
+app.get() - get data from req.params
+
+app.post() important. - for post use postman to test as the default action for express in browser is usually get. 
+install body-parser. documentation
+
+body parser is like middleware so we need to set it up in this fashion.
+
+
+If we use the URL to fo things, it doesnt look as good - query strings so not look clean
+
+HTTP request / response
+all in plaintext, not specially made.
+CMS network, Doc, and then refresh show them 
+general, request header, response header - explain the breakdown of how things work.
+
+look at response headers
+look at request headers
+
+posting usually has a request body
+where as the data recieved from the server is usually response data/ body. 
+
+Slides - go through each line and explain what is does
+
+curl -v www.google.com in ubuntu 
+
+webpages will be served from the response body after a request is made ot the server.
+
+Use postman to show how post requests work.
+postman here becomes the client side, how the user interacts with the server.  - remember to ensure the header is correct.
+ensure URL is right as well the order or req, res
+
+req.params is currently the most commonly used as it produces a very clean URL and a good looking code. - url will not be correct if information isnt done correctly.
+
+GET will grab things from the server
+Post is used to add to everything to the server etc.
+
+Cookies
+In the weekend material - key-value pairs stored on the client side.
+Go through slide logic set-cookie-jp
+goto google in chrome and look up the inspector and also checkout the set-cookie. -- cookie is also in the header.
+cookies are always key-value pairs, stored on the client side,  it is updated, (a refresh) on every load - show the set cookie expiry
+
+cookies allow the server to recognise you as a user and allow you back into the system without further authentication
+you can use a cookie system instead of using passport. 
+
+Cookie-parser - if you want to read, you must install another library. 
+install cookie-parser using npm
+
+cookies are always stored on the client side, not the server-side.
+
+when using postman you must add the Cookie in the header "gnalsbng=regsreg"
+
+
+google chrome extension - EditThisCookie = show in class.
+
+explain that the html is very much cascading systems.
+
+
+Session
+You will use this all the time, login to Gmail / Facebook - first time you need to add Username and Password - second load, you shouldnt need to log in again. 
+different sessions on the server- stored in the client cookies header - to define whos information is whose.
+
+We can show if we use the CMS and look at the headers in the network (DOC) Sessions are vital so that you can store the right persons information in the correct place. 
+
+cookie-session you can use to store sessions in cookies.
+
+must npm install.
+secret is used to encrypt the session.
+you can set cookies to have a small life or a long life.
+
+cookie-session is useful for very simple authentication
+
+cookies limited to own host name - browsers responsibility segment cookies - different for each page you may visit.
+
+https://github.com/alex/what-happens-when
+
+how it all works.
+
+show them in ubuntu
+date
+date +%s

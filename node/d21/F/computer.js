@@ -11,7 +11,7 @@ class Computer extends EventEmitter{
         computerPlay(){
             const choices = ['rock', 'paper', 'scissors']
             const num = Math.floor(Math.random() * 3);
-            this.referee.emit('compterReady', choices[num])
+            this.referee.emit('computerReady', choices[num])
         }
 }
 

@@ -1,0 +1,596 @@
+System admin.
+I hope you have credit cards, if not you can always goto 7/11 to buy a tap and go, alturnatively you can kindly ask a friend.
+The reason is we are going to open an AWS account which you need a credit card to do, as we are going to launch the master peice that was created yesterday.
+
+this is a difficult part of module 2 YAY
+
+Has everyone signed up to AWS?
+now we sign into AWS
+
+On global please use seoul as this is the cheapest region in asia, then look at EC2 if you've time.
+
+now on EC2  make sure you have seoul
+click to instances
+then launch instance
+
+look for ubuntu server 16.04 LTS (HVM), SSD Volume Type
+select
+
+choose T2.micro, we will not need a massivly powerful machine, moreover this is very cheap.
+
+click next
+
+number of instances = 1 not 0
+spot means that you only bid for a price that is cheaper than the usual price,if the price goes up past your bid price your machine will be shut down.
+this is good for non mission critial things like webscraping, dont tick.
+
+VPC we can create our own VPC, but the default is fine. 
+
+ then next
+
+ add storage.
+ the larger the size the higher the price. 8 is good enough for our work. Volume type, the default is good for our purpose, but if you are hosting a database and you want it to be faster you would change from general purpose SSD to provisioned IOPS this increases the reading and writing speed of this instance. 
+ normal SDD that you get from a computer center you get like 20000 IOPS, but if we need to rent a VPC with this speed it might cost you 100-200 USD a month which is enough to buy it our selves.
+ We just need the GPSSD
+
+ then next
+ on need to add tags.
+
+then next
+The security group is important, amazon provides a security network, basically a firewall and only opens one port 22, which is how we connect through SSH
+
+We will need to open a few more ports, 
+Select HTTP
+HTTPS
+So we add two more ports, 80 and 443
+
+next
+which is review, go through each section and mentio anything that we needed to add.
+then launch. 
+
+during the launch page, do you remember the private key you use in git hub, the public key you copy form git hub.
+So when you use git and type git push, github knows who you are. This is the same thing here.
+We also use this key pair to let the remote PC know it is you who is trying to connect to it.
+
+select create a new key pair
+in name,
+aws-cohort-8
+now download key pair
+
+this procedure, will generate a new private key before you continue, you will not be able to download it again, make sure you have kept it in a secure and private place
+
+show them in downloads or wherever it stores it that we have the new key pair, the SSH key pair.
+
+
+Anyone not able?
+
+then launch instance
+now goto EC2
+goto instances, the instance should be pending. 
+we will see some important information that we might need.
+Scroll down to public DNS and public IP, we should be able to acces our remote server / virtual machine. through this address or IP address. connection would be refused as we havent set up our webserver yet.
+
+using the newly generated pem file that we got from AWS
+in ubuntu type:
+
+-i means we are using a custom key.
+for me my key would be in downloads so we need to get the right path to it.
+should be something like
+it will be different on your pc.
+
+it will be ssh -i then the key location.
+
+
+ssh -i ~/mnt/c/Users/Sam/Downloads/aws-cohort-8.pem ubuntu@ <the public IP listed on the AWS website. >
+
+we might get the error unprotected key file. permissions are too open.
+so for windows we will actually need to copy this key into ubuntu below or /mnt/c
+
+the reason we are not able to use the key is because SSH is trying to tell you other users on your computer will be able to access your key, we know we are the only ones using it, but the program does not.
+
+so for mac users : change the accessibility mod.
+change mode, change ownership
+
+chmod 0600 <key location>
+
+when we change this we can try to use the same ssh command again.
+now we should be able to login.
+
+we should be able to see the ubuntu terminal, with the ip of the machine.
+for windows we actually need to move the pem key into ubuntu.
+PPT
+
+This is only for windows.
+
+Those who have succesfully logged into the remote amazon ubuntu.
+
+lets now install everything. we are installing everything that we started to install from day one.
+
+now this is all on the remote ubuntu.  (anyone who is connected to aws machine.) show them day 1 in web and day 39 in node it references the same command.
+
+
+# Run this line to add new nodejs to be available to install
+first this one.
+
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+
+# Run this line to install nodejs.
+then run this line.
+
+sudo apt-get install -y nodejs
+
+do not type the command copy and paste from the CMS
+
+after this we can use node on the remote ubuntu
+try type in node -v
+
+there are a few more things to install check out apt-get day 39, exercise CMS
+follow the instructions here, when we install something we will use the commands below this is just updating the list, with the most updated packages 
+
+sudo apt-get update 
+
+then we can install more.
+
+sudo apt-get install build-essential
+
+sudo apt-get install nginx htop git curl postgresql postgresql-contrib
+
+we can actually do all of this in one command.
+
+why do we not install node using apt-get? the node version we would get is very old, its like version 4. So we use commandline to install a newer nodejs.
+
+this is only command, you can only use your keyboard to control this.
+
+now we should know basic installation for system administration and deployment.
+
+recap, we have finished the first section of today, create the AWS account, launch EC2 instance
+
+in CMS AWS, you can see create elastic IP,
+we are actually given an elastic IP from EC2. But if you do not want this IP address or if you want to get a fixed IP we can swap between our EC2 server, if we want to secure or reserve an IP, then later on we can use this IP for a different purpose.
+I will not do this today
+
+we have learnt remote access. 
+
+in the CMS it is set up in a slightly different way. we use the ssh config to skip the -i and path. 
+basically this is an option that we pass to ssh if yo want to make it default, we can follow the cms to add the key into the configurtion. 
+
+For me I do not do this, as if you have multiple keys and multiple servers then you will need to change this config everytime.
+
+We will come back to domain name later.
+
+We have also learnt installation
+
+apt = is the package manager like npm, NPM is for node apt is for ubuntu.
+
+if we want to list everything that we have install in ubuntu
+
+type in this command.
+dpkg -l
+ every time we install update, we should use sudo apt-get update, to get the latest lists of urls, as perhaps they have been updated since the last time you logged in.
+
+ after update use apt-get install.
+
+ we installed node, this was very easy.
+
+ some basic commands to moniter ubuntu machine.
+ htop
+ type together.
+ We should see this screen. makes you look like a real coder, we have cpu useage, memory and Swap - like a spare or back up memeory that is stored in the hard disk, this is very slow.
+ you may get the out of memeory error at times as the VPC that we have only has one GB of memory.
+ instead of renting a new PC for memory, we can create a SWP and leverage the harddisk.  
+ If you are interested or encounter this error 
+ create swap ubuntu - google, look for digital ocean tutorial.
+ follow the steps.
+ You shouldnt need this right now.
+ create a backup or emergency memory
+
+ below we show all the processes that are consuming the cpu usuage. When you use nodejs or deploy or you have interation with your server, you will see node or nginx at the top.
+
+ to leave the page just press q
+
+ This is helpful when your sever is slower, you can then decide if we need to rent a new PC or just restart some processes.
+
+ next command w
+ this short command, this is a short summary of  the load average of and the up time, if you see the load average higher than the number of CPU's that you have it means you are overloading the remote server. 
+
+ this command it availble in mac terminals and ubuntus.
+ w is a very useful command, you can also see who is logged in if youre pc or mac, you will be able to see more people in your terminal.
+
+ we have already install nginx which is a famous webservice, we can use 
+
+ sudo service nginx start ---- to start our server....? did nothing happen?
+ goto the public ip in browser. you should see the nginx webpage.
+
+ when we need to upload files to our virtual machine, dont use FTP or copy and paste.
+
+ use SCP
+SCP means secure copy, from local machine to the host
+
+scp -i <pem key location> afile(local file) ubuntu(elastic ip): ~/
+
+the command it similar to ssh, we have scp, -i pemkey, the file then the ubuntu with ip and then : and finally ~/ which means location.
+
+we should now be able to see the file in remote machine.
+rm the file.
+
+one important and common thing, how do we schedule a program to run? Eg if youre project requries you to download a recipe from some website and we want to do this daily, we dont want to do it manually, we want to do it automatically. We will use Crontab. this is built into all ubuntu shells.
+
+use crontab -e (this means edit) I recommend you to use nano.vim :wq
+
+you will see the syntax .
+
+* * * * *
+minute, hour, day of month, month, day of week
+
+say we had a program which we want to run periodically then we set it up like this.
+
+* * * * * node scrape-sth.js - this file will run every minute, every hour, every day of the month, every month every day of the week.
+
+once an hour
+0 * * * * node scrape-sth.js
+
+once a day, everymorning at 4 am
+
+0 4 * * * node scrape-sth.js
+
+
+once a month - forevery first of the month do it.
+
+0 4 1 * * node scrape-sth.js
+
+read the CMS or google it if you want to know more.
+
+end slides.../
+
+open the cms git deployment side by side with the ubuntu terminal connected to our remote server.
+
+from the home directory
+
+we make a directory with an extension of .git, it is still a directory
+mkdir cohort-8-demo.git
+
+cd cohort-8-demo.git
+
+ls -la, there is nothing here.
+
+after this, we type:
+
+git init --bare
+
+bare means a bare repository, which wont mean much to you.
+now ls -la, you should see more files.
+
+this is the hierarchy of a standard git repo. github has this file structure on thier own servers sto receive push and pull requests.
+
+the next thing we do, is to create a post recieve script.
+what is this doing? essentially it says after we recieve our nodejs program, or basically git push, to this git repo here, what do we do next.
+
+cd hooks
+nano post-receive
+
+copy the cms stuff into it here.
+we will need to change a couple of things. 
+
+#!/bin/bash -l 
+GIT_REPO=$HOME/your_app_name.git
+PROJECT_DEST=$HOME/your_app
+
+if [ -d $PROJECT_DEST ];then
+    git --work-tree=$PROJECT_DEST --git-dir=$GIT_REPO checkout -f 
+else
+    rm -rf $PROJECT_DEST
+    git clone $GIT_REPO $PROJECT_DEST
+fi
+cd $PROJECT_DEST/
+npm install # if it is a npm repository
+forever stop ./app.js
+forever start ./app.js
+
+exit
+
+GIT_REPO=$HOME/cohort-8-demo.git // the location your rep is created.
+
+PROJECT_DEST=$HOME/cohort-8-demo // these names do not need to match each other.
+
+this script will try to clone the source code that you pushed to this destination, to create all the sourcecode files into this destination.
+
+we can see at the bottom app.js this is the entry point of your project, for me I usually use index.js
+
+forever stop ./index.js
+forever start ./index.js
+
+change the file name to the entry file, some people use node app, or node server, I use node index.
+
+control x and save.
+ls -la
+
+this post receive will not run unless we chmod it, we will need to make this file executable.
+
+chmod +x post-receive
+
+ls -la post-receive should now be green in colour. and an x is added to the end.
+
+once we have finished the post recieve. lets look at our script we just put into post recieve.
+
+GIT_REPO = this is actually assigning a variable, a shell script, we use bash to run the command.
+
+then we have an if else statement, to see if the directory exist or not. 
+does project destination exist? no!!!!
+we have created the .git folder, not the other one that we are going to clone our project into.
+
+the first time we push the project, the folder does not exist, 
+then we remove the project dest, not really needed. Then we clone from the git (local git) to this destination, it will create the directory with the source code.
+
+then cd into the directory
+npm install (install all packages)
+
+then it runs forever stop!
+
+What is this forever is a nodejs utility to help you run the nodejs program forever, it will keep running the node js.
+
+locally we always we will need to type in node app.js and if you ever close your pc everything will stop.
+
+so we want something in the background to help us run our programs forever.
+
+it is a package of node, so we run -- in our EC2 ubuntu
+sudo npm install -g forever
+
+now you should be able to use:
+forever list
+
+we will need a git init in the directory containing our project, maybe the code along example?
+git init
+git add .
+git commit -m "initial commit"
+
+assuming you have a git repo usually we use a remote origin. 
+instead of origin we add another destination.
+
+
+git remote add production ubuntu@<your elastic IP/ public ip>:your_app_name.git
+
+for me
+git remote add production ubuntu@...........:cohort-8-demo.git
+
+now we have added the production
+now: if we use git push production master, this will cause an error, as we were unable to define the pem key here...
+
+so what 
+I have to do is...
+is to go back to the first part of AWS, remote access.
+in home directory
+
+cd ~
+cd .ssh
+ls -a check if there is a config file here.
+if you do not have it touch one.
+
+touch config
+chmod 755 config
+
+nano config
+
+inside you type:
+
+Host public IP
+    User ubuntu
+    IdentityFile ~/aws-cohort8.pem (here you write the location of the file/ the name)
+
+so every time I use git or SSH I dont need to define the -i
+control x to exit.
+
+now I can git push production master.
+
+if you have added the wrong location for the remote repositry the easiest thing to do is:
+
+git remote rm production
+
+then add a new one back eg: git remote add production ubuntu@52.78.165.25:cohort-8-demo.git
+
+it should run and usually you might get errors.
+
+exit will exit the server.
+
+if there is something wrong in the post-receive script, you dont neeed to push again, we can go back to the virtual machine, goto the git directory, cd hooks
+./post-receive
+
+I will here mannually run the script, I will trigger the script, that should be run after the push.
+
+if I see forever processing file
+I can run forever list
+we should now see the program is up and running.
+
+console logs are in store in the logfile.
+we can take a look into the log fie, using nano
+it wont update.
+we can use 
+tail /home/ubuntu/.forever/aqoC.log
+it doesnt keep loading still.
+
+tail -f /home/ubuntu/.forever/aqoC.log
+
+now we should not be able to type, whenver our nodejs has a console.log it should now appear live.
+
+now when i visit the remote IP address where is my project, all I see is the nginx screen can i just add the port??
+no, it looks unclean, and moreover we havent opened port 3000, we opened port 80 and 443.
+
+So the next step is to use nginx as a front end, and reverse proxy, to server the node js program.
+
+in the remote ubuntu goto:
+sudo nano /etc/nginx/sites-available/default
+
+we should see the config file. Copy and paste the location block, ask nginx to use our nodejs as a backend and server the information etc.
+
+location / {
+    proxy_pass http://localhost:8080;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection 'upgrade';
+    proxy_set_header Host $host;
+    proxy_cache_bypass $http_upgrade;
+}
+
+they have one that already exsists in the default configuration file, so we need to either delete it or comment it out using #
+
+in my case i used port 3000.
+and i need to add https.
+I only change the port and the https
+
+location / {
+    proxy_pass https://localhost:3000;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection 'upgrade';
+    proxy_set_header Host $host;
+    proxy_cache_bypass $http_upgrade;
+}
+
+save and restart nginx
+sudo service nginx restart
+
+go back to the ip address and we shold see the website.
+it might not work as we didnt start our redis server....
+but we can see that our backend is working as we are serving our login page.
+
+you can deploy with trail and error.
+
+we need to link our domain into the server. and after we link the domain to the server, we can apply for the https certificate. 
+
+try this afternoon! with your own git projects.
+then we would have finished all the work for module 2 minus the group project.
+
+please do the quizes!!!!
+also talk to use about the wireframe database etc.
+
+lets goto namecheap.com
+try to buy a cheap name 
+
+cohort8
+add one to site, 
+
+do we need whoisguard?
+
+in ubuntu we can type whois tvb.com.hk - it will tell you who actually registered this domain. you should be able are the people who registered etc.
+
+if you signup for a .com.hk you will need to provide real information to register your domain. 
+
+whois guard will hide the identity of the people who registered the domains.
+
+confirm order, signin and stuff. 
+
+after we have registered and bought this domain name, we can actually set the IP address we want to associate with this domain name.
+in domain managment page
+in advanced DNS
+
+to link with our amazon IP 
+
+here we have the DNS management page. 
+if we do whois with our new domain name
+we should see the name server, we designate this name server to help map our domain and IP/
+
+currently our amazon machine is only accessible through the IP address.
+so we need to map our domain name to this particular EC2 instance, no matter where you register your domain name you will still need to use the DNS to map the domain name to the IP address. 
+
+name cheap is good as the DNS is free.
+most common type of record is A record, it means that we want to point some host to an IP
+what is host, cohort8.site... if we goto cohort8..... then we should get the root host, if the dns is activated
+
+the url will point to this @ record for this domain it points to this IP
+
+if we want some fancy sites we might want : www. dev. mail. etc are all known an prefixes, these prefixes are subdomains, we can add another record, host classroom, pointing to a random ip....
+
+these prefixes are what we define, many sites start with www.
+
+we need the CNAME for this, 
+host: www
+value: cohort8.site.
+the final dot signifies this is that whole domain,
+so the domain name will point to our @ which points to our actual ip address.
+
+we also have txt record. like a comment, it is helpful when setting up google webmaster tools, some external service, asking if we are the owner of the domain, then we can put a txt record in the domain, so that we can verify the domain. 
+
+We are now done...
+
+We should have an A record, with @ host and value of our IP
+then we should have a CNAME record, with www as host, and the domainname we bought as the value.
+
+if we want to manually check our domain record, we can use 
+from here we can see the type of record and the associated ip.
+
+dig in ubuntu
+
+dig google.com
+dig tvb.com.hk 
+
+it might take time for our server to go live. 
+we can either wait or have some manual mapping for our pc.
+
+this is like a local dns that can overide other running dns'same
+
+sudo nano /etc/hosts
+in this file we can add our IP form AWS
+
+eg
+52.78.165.25 cohort8.site
+then I should be able to visit the website.
+this is just a hack, its not super useful.....
+
+if you have registered domains before, any change the DNS should be immediate. 
+
+registrations of domains take a while.
+currently our website is not secure, especially for a site that requires alot of trust. plus facebok requires https now.
+
+there are two ways to set up our https. self sign or ask a third party to verify your domain. before last year, we needed to pay, since 2017 we have lets encrypt which is a free site.
+As long as they can access the site using this domain we just registered then it should work.
+
+we install some tools in our ubuntu server, so that this machine has the ownership of this domain name.
+
+we will need to update the nginx configuration file.
+this can only be done after DNS
+
+at server_name
+
+server_name cohort8.co;
+
+save it.
+
+install the five commands of certbot.
+
+sudo apt-get update
+
+then
+
+sudo apt-get install software-properties-common
+
+sudo add-apt-repository ppa:certbot/certbot
+
+sudo apt-get update
+
+sudo apt-get install python-certbot-nginx
+
+line by line.
+as there is some interaction.
+
+A for agree without reading terms, 
+N for no email sharing
+then enter..
+then it will challenge the domain, and then it will deploy.
+
+redirect? if the user goes through http then we need to redirect them to https.
+
+2 for redirect. it should now be done.
+
+so sudo service nginx restart
+
+now we should have https.
+
+certbot certificates expire every 90 days so we will want to use crontrab to automatically renew the certificate this is different then buying a certificate which should last at least a year.
+
+crontab -e
+in the file.
+every first day of the month at midnight it will run certbot renew. 
+0 0 */1 * * certbot renew
+
+Everyone should be talking in the second group project.
+most important deploy to AWS
+you cant use localhost.

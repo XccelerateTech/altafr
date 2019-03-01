@@ -1,0 +1,11 @@
+Weekly assignment
+You need to develop your own test cases for it, think like the creators of exercism to see what will be expected for each function
+
+Need to go through the requirements of the Weekly Assignment 
+
+Express we know
+writing notes to Json file, we know using fs.write
+Authentication we teach you a basic version 
+Handlebars we teach your
+
+the application is built for users to create individual notes for themselves, and to see their notes. Using Authentication you will be able to distinguish which user is coming into the application and thus find their notes accordingly.

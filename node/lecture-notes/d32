@@ -1,0 +1,93 @@
+demo, again how users can access postgres through command line
+create a database Xccelerate,
+create a students table
+id
+name - varchar
+age - integer
+gender- gender boolean T/F M/F
+then insert some students into the tables
+
+then show them how we list the data again (SELECT * FROM students)
+populate with at least 4
+
+then make another table in this database, called courses
+id serial primary key,
+name, not null varchar
+
+\dt to list both tables.
+
+now insert into course, FTSE / FTDS
+but now we need to define a relationship between one table and antoher, so we can create another table to allow this association
+
+create table 
+enrollment
+student_id, integer not null
+course_id, integer not null
+
+select all from students.
+and from courses
+
+now INSERT INTO enrollment
+(student_id, course_id) VALUES (1,1)
+do for all students but put some in other courses. 
+
+now SELECT name FROM students JOIN enrollment ON students.id = enrollment.student_id AND enrollment.course_id = 1;
+equality is a single =
+in javascript we use == or ===
+and = to assing. 
+in SQL we only use a single = to see equality
+
+now it will only show the students in that course id.
+but if we change the course id to 2, we can then show the other course. 
+
+instead of select name, just SELECT COUNT(*)
+
+now we can do through the cms, there are multiple types of join, when we just use join, it will fire inner join, as this is the most common association, the other types are differnt.
+show them the visualiations of the SQL joins
+explain inner join, A and B are different tables,
+inner join will only show when they are in both tables
+its like maths and a ven diagram
+go through each example like this
+left join and right join are simiar, the order is differnt in command
+
+full outerjoin, we are grabbing everything.
+usually we only need to use inner join. JOIN
+
+now goto transactions. 
+
+After the slides
+Do a demo with the students table
+
+SELECT * FROM students;
+
+BEGIN;
+after we type this in the word appears so you know we are changing things.
+UPDATE students SET age = 18 WHERE id = 1;
+
+SELECT * FROM students;
+
+now you should be able to see the changes.
+we have not commited the transaction to the database right now.
+
+(have another ubuntu open and make sure you have it connected to postgres show them that as the transaction has not been commited to the database, the database hasnt been uploaded.)
+
+now commit the action and so that its updated on both
+if you fail thats okay to, show them that rollback has occured..
+if it doesnt fail show them the power of transaction by causing a failure to roll back information 
+
+after this using the two differnt ubuntus try to update the same user, in one begin transaction 
+BEGIN;
+UPDATE students SET age = 42 WHERE id = 1;
+SELECT * FROM students;
+
+now in the other ubuntu 
+make the same update 
+UPDATE students SET age = 21 WHERE id = 1;
+this hasnt updated yet 
+
+one has begun a transaction and we have updated, the database should automatically block any incoming requests to this row  a commit will unblock the database
+
+So since we tried to update the database while it was blocked to set the age to 21, when we commit the original transaction it will automatically update the age back to 21. on the userid 1
+
+SELECT * FROM students
+

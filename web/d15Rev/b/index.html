@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>
+        Random User Sunrise and Sunset!
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+
+    <h1>Find me a timezone and its sunrise and sunset</h1>
+    <button id='getTimezone'>Find me now!</button>
+    <div id='appendMeHere'></div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+
+    <script>
+
+        $(function () {
+
+
+
+
+            $('#getTimezone').on('click', function (e) {
+
+                let userInfo1 = $.getJSON(`https://randomuser.me/api/`);
+                let userInfo2 = $.get(`https://randomuser.me/api/`);
+
+                $.when(userInfo1, userInfo2).done(function (data1, data2) {
+                    console.log(data1, data2)
+
+                    let person1 = data1[0].results[0]
+                    let person2 = data2[0].results[0]
+
+                    let coordinate1 = person1.location.coordinates
+                    let coordinate2 = person2.location.coordinates
+
+                    let latLng1 = (`lat=${coordinate1.latitude}&lng=${coordinate1.longitude}`)
+                    let latLng2 = (`lat=${coordinate2.latitude}&lng=${coordinate2.longitude}`)
+
+
+
+                    $.when(getSunriseSunset(latLng1), getSunriseSunset(latLng2)).then(function (result1, result2) {
+
+
+
+                        let sunriseP1 = (result1[0].results.sunrise)
+                        let sunsetP1 = (result1[0].results.sunset)
+
+
+                        let sunriseP2 = (result2[0].results.sunrise)
+                        let sunsetP2 =(result2[0].results.sunset)
+
+                        console.log(result1);
+                        console.log(result2);
+
+                        console.log(`Person one sunrise ${sunriseP1}`)
+                        console.log(`Person one sunset ${sunsetP1}`)
+
+                        console.log(`Person two sunrise ${sunriseP2}`)
+                        console.log(`Person two sunset ${sunsetP2}`)
+
+                        let actualSunsetP2 = new Date(sunsetP2)
+                        console.log(actualSunsetP2)
+
+                         console.log((actualSunsetP2.getTime() - person2.location.timezone.offset));
+                      
+
+                        //fix the timezone.
+                        $('#appendMeHere').append(`
+                        <p>Sunrise of  ${person1.location.timezone.description} is at ${sunriseP1} ${person1.location.timezone.offset}</p>
+                        <p>Sunset of  ${person1.location.timezone.description} is at ${sunsetP1} ${person1.location.timezone.offset}</p>
+                        <p>Sunrise of  ${person2.location.timezone.description} is at ${sunriseP2} ${person2.location.timezone.offset}</p>
+                        <p>Sunset of  ${person2.location.timezone.description} is at ${sunsetP2} ${person2.location.timezone.offset}</p>
+                        `)
+                    })
+                })
+
+                function getSunriseSunset(latLng) {
+                    return $.get(`https://api.sunrise-sunset.org/json?${latLng}&formatted=0`)
+
+                }
+
+            })
+
+
+
+
+
+        })
+
+    </script>
+
+</body>
+
+</html>

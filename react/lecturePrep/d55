@@ -1,0 +1,55 @@
+Weekly Assignment, first lets look at the wireframe. Before we start we should try to think about the different components of our app. How should we structure the program? 
+
+So if we look at the diagram, we have four separate components, you can see there are some things that we will change. If you think about this heirarcy 
+
+If you were going to do this page in plain html it might look something like this:
+
+<App>
+    <div>
+    <img src="logo.png" />
+    420 Links
+    <AddButton></AddButton>
+    </div>
+    <div>
+    <SearchBar></SearchBar>
+    <LinkList>
+        <LinkItem>
+        <LinkItem>
+        <LinkItem>
+        <LinkItem>
+        <LinkItem>
+    </LinkList>
+    </div>
+</App>
+
+So we need to implement React using this heirarchy
+lets do it together:
+
+in a new directory:
+
+create-react-app weekly-assigment-react-01 --scripts-version=react-scripts-ts 
+
+cd into the project
+code .
+yarn start
+
+We should see the React starter page.
+If we look back at the image of our expected outcome then we can see that there is left side content and right sided content, it seems like it will fit bootstrap framework, so we can use bootstrap to set the layout.
+
+To add bootstrap we use yarn!
+yarn add bootstrap
+
+This just installs the files into the project, we are not finished installing bootstrap, so we need to add the code from the CMS into our index.tsx, the entry point to our project. 
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+So we might want to test to see if bootstrap has been installed successfully. To do this try to set up the App.tsx to contain columns. So that if it works we should see two columns when we check the app in our browser. It will work. It works as we have installed then imported bootstrap, and then we use the bootstrap framework to force the page to render two columns. 
+
+The bootstrap JS, which we have not installed yet, we have only installed the CSS, is for adding things like modal, tool tips, slide show, things that use javascript, bootstrap uses javascript to help add those effects. 
+This means that bootstrapJs if effecting the DOM directly, which is not allowed in React, so they cannot be used directly, it will cause conflict with rendering as we use React virtual Dom to manipulate the DOM. BootstrapJS does this and so we need to use React specific versions of these libraries, we will use this library later, it is called reactstrap 
+
+Now we will construct the layout.
+Goto the app.tsx
+
+Things will get more difficult. 
+Please send up groups for the capstone with ideas 

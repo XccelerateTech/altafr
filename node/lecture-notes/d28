@@ -1,0 +1,98 @@
+This is also a code along demo - we already have a workable demo
+you can use the CMS to download a folder which has a basic app on it already
+use git clone from the CMS
+
+goto branch week 2
+will need to do npm install
+
+they should code along
+now we can use node app.js
+localhost8080
+
+you can see the application
+
+show the app.js
+
+then show them the init-app inside utils
+we have the handlebars here
+hb = require('express-handlebars')
+
+when we set the default layout to be main and then set the view engine to handlebars we will always use handlebars as the default layout of this application 
+
+you can see this in views, layouts, then we have a main, groups, index etc = but the name in utils must be the same as main if you want the main handlebar to render.
+when we render the app the main.js is rendered. 
+
+as we are moving towards larger and larger applications we will need to develop our structure well so that we dont have thousands of lines of code in our app.js - difficult to maintain and handle
+
+We need to structure
+We will need routers folder  ==>
+We will need a service folder  ==>
+and a viewRouter file (handles the root directory = we use res.render)
+this means we are using a template engine to serve our pages by naming it index we pass the reigns to handlebars and it renders the index.handlebars page (from the view directory)
+
+look at the files 
+checkout the inspector as well!
+in the main.handlebars we are basically setting up every page with the correct scripts in the head, the 'body' is served via the different requests. 
+
+If we goto click on users, we can see the URL change, and then we can see in the file that there is just a div tag and a script file, but on the inspector you can see everything from the head tags from main
+
+
+localhost8080 is a get method by default on most browsers
+
+change things on the .handlebars to show that we can manipulate the files. add divs or h1 etc
+
+everytime we render a request we will it will be rendered in inside the main.handlebars file (ie when you look at users, you get the main page, and the users information for the body - if you goto groups you get the main page and the groups info in the body)
+
+
+handlebar is a template engine (when you have the same format for differnt pages, and you dont want to copy and serve alot of code, we can use handle bars to render out content that is the same.)
+
+We store things locally in the JSON file, go throught the users.json, this is the information rendered in the users page of the application, we dont render this from the server. We are rendering users which has a script that makes a request to the server so that we can get the information so this is an ajax call to the backend API
+so for the users page we render the main.handlebars file and the users.body the code in users.handlebars which fires off an ajax call to read from the Users.json and sends it back to the client.
+
+show them in the network by refreshing the page
+
+add another user into the user.json 
+follow the flow of how we get the data from our files to our application look through the code
+this is client side rendering! we are sending everything to the client in seperate requests so its client side
+
+if it were all in one big send, then it would be server side rendering (we dont actually want to use this type of rendering anymore!) We should have an API that sends jsons back and fourth so that you get information where you need it!
+
+For serverside rendering we might need multiple API's so nowadays we try to do client side rendering. 
+
+
+HTML methods 
+how do we render data to the dom once we recieve data from a json file
+we can use vanilla javascript to render the info to the dom by using a string, 
+go through line by line - concatenate everything in a string with all the tags, then we use javascript to render it to the dom, this is difficult to read, and it is very error prone, one miss spelling will cause errors.
+
+Second method, is a better approach, a hidden element, a template, when we get the information we render the details into the template and clone it to the dom - this doesnt use the template tag but a div with all the corrected labels and p tags
+
+third method
+We use the template tag in html and this will be a similar method to the previous method
+
+XSS attack - Something a little cool - this means we have an attacker who wants to run malicous code on our website, - when other users use our website their code will run the malicous code.
+we currently store our user info in User.Json but 
+if we change the name from "John" to "John</p><script>alert('surprise')</script><p>", this is just an alert, but we can do alot more, like steal thier data or cookies etc. steal all thier data
+You dont want a eb app to be open to these attacks
+
+to protect from these attacks we will need to google, html escape javascript 
+
+look for this solution:
+
+function escapeHtml(unsafe){
+return unsafe 
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;")
+}
+
+this will take the html elements out of the concatenated string we had before (and now the string will have amperstand amp to replace & etc) this is the code for each of those symbols
+
+in users.js import the function from stack then append(user(escapeHtml(e.firstname), escapeHtml(e.last_name), escapeHtml(e.email)
+
+then you can see the script tag that the hacker was trying to type in the database. This is a vulernability of client side rendering 
+
+If you use handlebars, then the information will be escaped already, so in theory we dont need the function above. 
+

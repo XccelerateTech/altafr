@@ -1,0 +1,113 @@
+demo
+
+mkdir demo
+cd demo
+npm init -y (accept defaults in project)
+npm install express
+we will also neeed to show express-basic-auth
+npm install express-basic-auth
+touch index.js
+code .
+
+index.js
+const express  = require('express');
+const basicAuth = require('express-basic-auth);
+
+let app = express();
+
+
+
+app.get('/', (req, res)=>{
+    res.send('hello there');
+})
+
+app.listen(8080, ()=>{
+    console.log(running on part 8080)
+})
+
+then start the server
+goto local host, so we can see hello.
+
+for basic auth we will need to add the code 
+add after let app and before the get request 
+look at example on npm while implementing 
+app.use(basicAuth({
+    users: {'admin': 'supersecret'} //this is the username and password. 
+}))
+
+we should have the 401 error that we talked about before! We will need to send WWW-Authenticate: Basic realm = 'Note Taking App' as a response header.
+so that the browser knows what to do 
+
+we will now need to add more code, we will need to add 
+we do this under users: ('admin....)
+challenge:true,
+
+this is controlled by the browser so safari and chrome will look different - the prompt will look different! 
+
+after putting in credentials, now when we sign in with the proper requests in the header we can log in
+check the inspector and look at the second thing down, now can can see Authentication Basic - if we copy the encoded message
+goto ubunto
+echo "the message" | base64 -D
+This will allow us to see the username and password
+
+We can add multiple users into the users : object
+So we can have multiple logins, when testing you will see another prompt on refresh as there are now two logins and the authenticator needs you to choose one with a username and password
+
+show them login one more time!
+We can do this in postman too!
+
+goto post man make a get
+http://localhost:8080/
+we can use authorisation in postman, we should choose basic auth
+add in the correct credentials. 
+now preview request, so we can see all the information in the headers then we can send and get the response from the page 
+if we dont have the header, we will get no result and the response header will be WWW Authenticate -> Basic, its trying to prompt you 
+
+We need the challenge if we want to get a prompt for username and password. 
+
+We may also add custom authentication methods
+say we have an array of users
+
+const = USERS = [
+    {
+        username: 'admin1',
+        password: 'password'
+    },
+      {
+        username: 'admin2',
+        password: 'password2'
+    },
+]
+
+let myAuthFunc = (username, password)=>{
+    return Users.some((user)=>{
+       return user.username == username && user.password == password
+    })
+}
+
+replace the users from before 
+add an "authorizer: myAuthFunc,"
+where users were before.
+
+what this does is check to see if the username and password passed through the function is true (if the user is there) it will loop through the array of users - if its true the username and password will need to match!
+
+Then we will be able to get our result
+
+in postman you can see the request and the parameters that will be passed - this is slightly different to express where the parameters refer to the url - it refers to the query 
+- add req.query.name into the res.send
+
+remember to add name to the key value pair
+name and value.
+
+
+can look up digest authentication
+it tries to fix the issue we have in basic auth, it solves the issue of easy decoding by using a hash - the input is put into a hash a equation this will spit out a output which is very different 
+
+a hash function is a mathmatical function that takes an object and returns something that looks extremerly random - if you change the input the output will be completely different - no prediction of how the output could look. 
+
+it responds with a hash
+
+goto wiki for digest auth
+in digest we send the hash in the header, not the username and password
+
+Basic Auth is very primitive, digest use a different protocol so you will need to learn a new methodology
